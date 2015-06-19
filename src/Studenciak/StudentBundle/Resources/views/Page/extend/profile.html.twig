@@ -8,14 +8,20 @@
 
 
 {% block view %}
+<h2>Mój profil</h2>
+
+<div class="db-profile">
+	<div class="db-profile-avatar">
+		<img src="{{ app.session.get('image') }}" alt="Profil">
+	</div>
+	<div class="db-profile-data">
+		<table class="db-profile-table">
+			<tr><td>Imię i nazwisko</td><td>{{ app.session.get('name') }}</td></tr>
+			<tr><td>E-mail</td><td>{{ app.session.get('email') }}</td></tr>
+		</table>
+	</div>
+</div>
 
 
-<img src='{{ app.session.get('image') }}' />
-<br />
-{{ app.session.get('name') }}
-
-<br />
-
-{{ app.session.get('email') }}
 
 {% endblock %}

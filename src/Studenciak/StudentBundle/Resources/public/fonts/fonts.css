@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Sinkin Sans';
-    src: url(sinkin-sans/SinkinSans-400Regular.otf);
+    src: url('sinkin-sans/SinkinSans-400Regular.otf');
     font-weight: 400;
 }
 

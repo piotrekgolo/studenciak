@@ -35,7 +35,7 @@ class PageController extends Controller
 	{
 		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
 		$osoby = $repo->findAll();
-		
+
 		return $this->render('StudenciakBundle:Page:extend/persons.html.twig', array('osoby' => $osoby));
 	}
 
@@ -47,7 +47,7 @@ class PageController extends Controller
 	public function profileAction()
 	{
 		$session = $this->getRequest()->getSession();
-		if (!$session->get('email'))  
+		if (!$session->get('email'))
 			return $this->redirect($this->generateUrl('course'));
 
 		return $this->render('StudenciakBundle:Page:extend/profile.html.twig');
@@ -56,8 +56,8 @@ class PageController extends Controller
 	public function logoutAction()
 	{
 		$session = $this->getRequest()->getSession();
-		if (!$session->get('email'))  
-		return $this->redirect($this->generateUrl('login'));
+		if (!$session->get('email'))
+			return $this->redirect($this->generateUrl('login'));
 
 		return $this->render('StudenciakBundle:Page:extend/logout.html.twig');
 	}
@@ -65,7 +65,7 @@ class PageController extends Controller
 	public function loginAction()
 	{
 		$session = $this->getRequest()->getSession();
-		if ($session->get('email'))  
+		if ($session->get('email'))
 			return $this->redirect($this->generateUrl('profile'));
 
 		return $this->render('StudenciakBundle:Page:extend/login.html.twig');
@@ -73,7 +73,7 @@ class PageController extends Controller
 
 	public function AjaxUpdateDataAction()
 	{
-		$request = $this->container->get('request');        
+		$request = $this->container->get('request');
 		$name = $request->request->get('name');
 		$image = $request->request->get('image');
 		$email = $request->request->get('email');
@@ -81,7 +81,7 @@ class PageController extends Controller
 
 		$akceptowany = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba')->findOneByEmail($email);
 
-		if (!$akceptowany) 
+		if (!$akceptowany)
 		{
 			$response = array("code" => 'niezarejestrowany');
 
@@ -98,7 +98,7 @@ class PageController extends Controller
 			$em->flush();
 		}
 
-		else 
+		else
 		{
 			if ($akceptowany->getAktywny() == 0)
 				$response = array("code" => 'niezaakceptowany');
@@ -114,13 +114,13 @@ class PageController extends Controller
 
 			}
 		}
-			return new Response(json_encode($response)); 
-		}
+		return new Response(json_encode($response));
+	}
 
 	public function logoutSessionAction()
 	{
 		$session = $this->getRequest()->getSession();
-		if ($session->get('email'))  
+		if ($session->get('email'))
 		{
 			$session->remove('name');
 			$session->remove('image');
@@ -134,17 +134,17 @@ class PageController extends Controller
 	{
 		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
 		$osoba = $repo->find($id);
-		
+
 		return $this->render('StudenciakBundle:Page:extend/usun.html.twig', array('osoba' => $osoba));
 	}
 
-		public function usuwanieAction($id)
+	public function usuwanieAction($id)
 	{
-		 $em = $this->getDoctrine()->getManager();
-	$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
+		$em = $this->getDoctrine()->getManager();
+		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
 		$osoba = $repo->find($id);
 		$em->remove($osoba);
-$em->flush();
+		$em->flush();
 
 		return $this->redirect($this->generateUrl('persons'));
 	}
@@ -152,14 +152,14 @@ $em->flush();
 	public function aktywujAction($id)
 	{
 		$em = $this->getDoctrine()->getManager();
-	    $osoba = $em->getRepository('StudenciakBundle:Osoba')->find($id);
+		$osoba = $em->getRepository('StudenciakBundle:Osoba')->find($id);
 
-	    if (!$osoba) {
-	       return $this->redirect($this->generateUrl('persons'));
-	    }
+		if (!$osoba) {
+			return $this->redirect($this->generateUrl('persons'));
+		}
 
-	    $osoba->setAktywny(1);
-	    $em->flush();
+		$osoba->setAktywny(1);
+		$em->flush();
 
 		return $this->redirect($this->generateUrl('persons'));
 	}

@@ -15,7 +15,15 @@
 
 {% block view %}
 
-<a href="{{ path('logoutSession') }}" onclick="signOut();">Sign out</a>
+<div class="db-logged" >
+Czy na pewno chcesz się wylogować?
+<br />
+		<button><span>
+		<a href="{{ path('logoutSession') }}" onclick="signOut();">Wyloguj się</a>
+		</span></button>
+</div>
+
+
 <script>
   function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
