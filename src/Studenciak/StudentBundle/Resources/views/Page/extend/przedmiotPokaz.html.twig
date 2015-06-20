@@ -1,0 +1,37 @@
+{% extends 'StudenciakBundle:Page:base.html.twig' %}
+
+{% block title %}Przedmioty{% endblock %}
+
+{% block general %}active{% endblock %}
+{% block przedmiot %}active{% endblock %}
+
+{% block view %}
+<div class="db-breadcrumbs">
+    <a class="db-brdcmb-item" href="#">
+        <i class="icon-home"></i>
+    </a>
+    <a class="db-brdcmb-item" href="#">
+        Ogólne
+    </a>
+    <a class="db-brdcmb-item" href="#">
+        Kursy
+    </a>
+</div>
+
+
+{% if app.session.get('admin') == 1 %} 
+
+<div class="db-logged" >
+    <a href="{{path('przedmiotDodaj')}}">
+    <button><i class="icon-plus"></i><span>Dodaj przedmiot</span></button>
+    </a>
+</div>
+
+{% endif %}
+
+
+<h2>JAKIS PRZEDMIOT</h2>
+tu cos o nim
+{{ id }}
+{% endblock %}
+

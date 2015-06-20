@@ -1,0 +1,44 @@
+{% extends 'StudenciakBundle:Page:base.html.twig' %}
+
+{% block title %}Dodaj przemiot{% endblock %}
+
+{% block general %}active{% endblock %}
+{% block przedmiot %}active{% endblock %}
+
+{% block view %}
+<div class="db-breadcrumbs">
+	<a class="db-brdcmb-item" href="#">
+		<i class="icon-home"></i>
+	</a>
+	<a class="db-brdcmb-item" href="#">
+		Ogólne
+	</a>
+	<a class="db-brdcmb-item" href="#">
+		Kursy
+	</a>
+</div>
+
+{% if app.session.get('admin') == 1 %} 
+
+
+<div class="db-logged" >
+<h2>Dodawanie przedmiotu</h2>
+	<br />
+	<form action="{{ path('przedmiotPokaz',  {'id' : '2'}) }}" method="post" {{ form_enctype(form) }}>
+
+		{{ form_widget(form) }}
+
+		<input type="submit" />
+	</form>
+
+</div>
+
+
+
+
+
+
+
+{% endif %}
+{% endblock %}
+

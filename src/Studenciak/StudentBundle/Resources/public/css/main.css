@@ -119,12 +119,11 @@ button {
 button i {
 	font-size: inherit !important;
 	float: left;
-	margin: 14px
+	margin: 18px
 }
 button span {
 	padding: 16px;
-	//padding-left: 0;
-	//margin-bottom: -3px;
+	margin-bottom: -3px;
 	float: left
 }
 button:hover {
@@ -194,8 +193,8 @@ table th {
 	border-bottom: solid 2px #222
 }
 table th[data-sorted] {
-	color: #1992BC;
-	border-color: #1992BC
+	color: #38A52D;
+	border-color: #38A52D
 }
 table th[data-sorted]:after {
 	margin-left: 4px
@@ -534,7 +533,7 @@ table td {
 	margin-top: -5px
 }
 .main .db-side-group.active:before {
-	color: #1992BC
+	color: #1d5517
 }
 .main .db-side-button {
 	margin: 20px;
@@ -549,7 +548,7 @@ table td {
 	display: block;
 	position: absolute;
 	content: '';
-	border: solid 2px #1992BC;
+	border: solid 2px #1d5517;
 	border-radius: 20px;
 	width: 8px;
 	height: 8px;
@@ -622,7 +621,7 @@ table td {
 	opacity: 1
 }
 .db-logged {
-	text-align: center;
+	text-align: center
 }
 .db-logged .db-logged-container {
 	margin-top: 40px;
@@ -727,10 +726,10 @@ a {
 	color: inherit
 }
 a:hover, a.active {
-	color: #1992BC
+	color: #38A52D
 }
 a.active:hover {
-	color: #136f8f
+	color: #1d5517
 }
 p {
 	line-height: 140%

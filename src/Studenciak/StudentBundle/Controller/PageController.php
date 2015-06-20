@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 use Studenciak\StudentBundle\Entity\Osoba;
+use Studenciak\StudentBundle\Entity\Przedmiot;
 
 class PageController extends Controller
 {
@@ -16,9 +17,9 @@ class PageController extends Controller
 		return $this->render('StudenciakBundle:Page:base.html.twig');
 	}
 
-	public function courseAction()
+	public function przedmiotAction()
 	{
-		return $this->render('StudenciakBundle:Page:extend/course.html.twig');
+		return $this->render('StudenciakBundle:Page:extend/przedmiot.html.twig');
 	}
 
 	public function repoAction()
@@ -26,31 +27,31 @@ class PageController extends Controller
 		return $this->render('StudenciakBundle:Page:extend/repo.html.twig');
 	}
 
-	public function groupsAction()
+	public function grupyAction()
 	{
-		return $this->render('StudenciakBundle:Page:extend/groups.html.twig');
+		return $this->render('StudenciakBundle:Page:extend/grupy.html.twig');
 	}
 
-	public function personsAction()
+	public function osobyAction()
 	{
 		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
 		$osoby = $repo->findAll();
 
-		return $this->render('StudenciakBundle:Page:extend/persons.html.twig', array('osoby' => $osoby));
+		return $this->render('StudenciakBundle:Page:extend/osoby.html.twig', array('osoby' => $osoby));
 	}
 
-	public function diaryAction()
+	public function dziennikAction()
 	{
-		return $this->render('StudenciakBundle:Page:extend/diary.html.twig');
+		return $this->render('StudenciakBundle:Page:extend/dziennik.html.twig');
 	}
 
-	public function profileAction()
+	public function profilAction()
 	{
 		$session = $this->getRequest()->getSession();
 		if (!$session->get('email'))
 			return $this->redirect($this->generateUrl('course'));
 
-		return $this->render('StudenciakBundle:Page:extend/profile.html.twig');
+		return $this->render('StudenciakBundle:Page:extend/profil.html.twig');
 	}
 
 	public function logoutAction()
@@ -127,7 +128,7 @@ class PageController extends Controller
 			$session->remove('email');
 			$session->remove('admin');
 		}
-		return $this->redirect($this->generateUrl('course'));
+		return $this->redirect($this->generateUrl('przedmiot'));
 	}
 
 	public function usunAction($id)
@@ -146,7 +147,7 @@ class PageController extends Controller
 		$em->remove($osoba);
 		$em->flush();
 
-		return $this->redirect($this->generateUrl('persons'));
+		return $this->redirect($this->generateUrl('osoby'));
 	}
 
 	public function aktywujAction($id)
@@ -155,13 +156,46 @@ class PageController extends Controller
 		$osoba = $em->getRepository('StudenciakBundle:Osoba')->find($id);
 
 		if (!$osoba) {
-			return $this->redirect($this->generateUrl('persons'));
+			return $this->redirect($this->generateUrl('osoby'));
 		}
 
 		$osoba->setAktywny(1);
 		$em->flush();
 
-		return $this->redirect($this->generateUrl('persons'));
+		return $this->redirect($this->generateUrl('osoby'));
+	}
+
+	public function przedmiotDodajAction(Request $request)
+	{
+
+		$session = $this->getRequest()->getSession();
+		if ($session->get('admin'))
+		{
+			$przedmiot = new Przedmiot();
+
+
+			$form = $this->createFormBuilder($przedmiot)
+			->add('nazwa', 'text')
+			->add('haslo', 'text')
+			->getForm();
+
+
+			$form->handleRequest($request);
+			if ($form->isValid()) {
+
+				return $this->redirect($this->generateUrl('profil'));
+			}
+
+			return $this->render('StudenciakBundle:Page:extend/przedmiotDodaj.html.twig', array('form' => $form->createView()));
+		}
+
+		else
+			return $this->redirect($this->generateUrl('przedmiot'));
+	}
+
+	public function przedmiotPokazAction($id)
+	{
+		return $this->render('StudenciakBundle:Page:extend/przedmiotPokaz.html.twig', array('id'=>$id));
 	}
 
 }

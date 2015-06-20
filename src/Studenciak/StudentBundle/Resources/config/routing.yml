@@ -2,29 +2,29 @@ index:
     pattern:  /
     defaults: { _controller: StudenciakBundle:Page:index }
 
-course:
-    path:     /course
-    defaults: { _controller: StudenciakBundle:Page:course }
+przedmiot:
+    path:     /przedmiot
+    defaults: { _controller: StudenciakBundle:Page:przedmiot }
 
 repo:
     path:     /repo
     defaults: { _controller: StudenciakBundle:Page:repo }
 
-groups:
-    path:     /groups
-    defaults: { _controller: StudenciakBundle:Page:groups }
+grupy:
+    path:     /grupy
+    defaults: { _controller: StudenciakBundle:Page:grupy }
 
-persons:
-    path: /persons
-    defaults: { _controller: StudenciakBundle:Page:persons }
+osoby:
+    path:     /osoby
+    defaults: { _controller: StudenciakBundle:Page:osoby }
 
-diary:
-    path:     /diary
-    defaults: { _controller: StudenciakBundle:Page:diary }
+dziennik:
+    path:     /dziennik
+    defaults: { _controller: StudenciakBundle:Page:dziennik }
 
-profile:
-    path:     /profile
-    defaults: { _controller: StudenciakBundle:Page:profile }
+profil:
+    path:     /profil
+    defaults: { _controller: StudenciakBundle:Page:profil }
 
 logout:
     path:     /logout
@@ -53,3 +53,11 @@ usuwanie:
 aktywuj:
     path: /aktywuj/{id}
     defaults: { _controller: StudenciakBundle:Page:aktywuj }
+
+przedmiotDodaj:
+    path: /przedmiot/dodaj
+    defaults: { _controller: StudenciakBundle:Page:przedmiotDodaj }
+
+przedmiotPokaz:
+    path: /przedmiot/pokaz/{id}
+    defaults: { _controller: StudenciakBundle:Page:przedmiotPokaz }
