@@ -23,7 +23,7 @@
 
 <div class="db-logged" >
     <a href="{{path('przedmiotDodaj')}}">
-    <button><i class="icon-plus"></i><span>Dodaj przedmiot</span></button>
+        <button><i class="icon-plus"></i><span>Dodaj przedmiot</span></button>
     </a>
 </div>
 
@@ -32,19 +32,26 @@
 
 <h2>Moje przedmioty</h2>
 <table>
-    <tr><th data-sorted="desc">Nazwa</th><th>Prowadzący</th><th>Postęp</th><th></th></tr>
     <tr>
-        <td>Metody autoprezentacji</td>
-        <td>dr Janusz Bąk</td>
-        <td>20%</td>
+        <th data-sorted="desc" width="50%">Nazwa</th>
+        <th width="40%">Prowadzący</th>
+        <th width="5%">Semestr</th>
+        <th width="5%"></th>
+    </tr>
+
+
+    {% for przedmiot in przedmioty %}
+
+    <tr>
+        <td>{{ przedmiot.getNazwa }}</td>
+        <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
+        <td>{{ przedmiot.getSemestr }}</td>
         <td><i class="icon-settings"></i></td>
     </tr>
-    <tr>
-        <td>Obiektowe bazy danych</td>
-        <td>dr Stanisława Plichta</td>
-        <td>66,6%</td>
-        <td><i class="icon-settings"></i></td>
-    </tr>
+
+
+
+    {% endfor %}
 </table>
 {% endblock %}
 

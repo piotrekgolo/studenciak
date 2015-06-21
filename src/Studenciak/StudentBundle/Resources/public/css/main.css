@@ -1,4 +1,84 @@
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -6,102 +86,145 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 	font: inherit;
 	vertical-align: baseline
 }
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
 	display: block
 }
+
 body {
 	line-height: 1
 }
-ol, ul {
+
+ol,
+ul {
 	list-style: none
 }
-blockquote, q {
+
+blockquote,
+q {
 	quotes: none
 }
-blockquote:before, blockquote:after {
+
+blockquote:before,
+blockquote:after {
 	content: '';
 	content: none
 }
-q:before, q:after {
+
+q:before,
+q:after {
 	content: '';
 	content: none
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0
 }
+
 @-webkit-keyframes slideIn {
 	from {
 		-webkit-transform: translateY(-20px);
 		transform: translateY(-20px);
 		opacity: 0
 	}
+
 	top {
 		-webkit-transform: translateY(0px);
 		transform: translateY(0px);
 		opacity: 1
 	}
+
 }
+
 @keyframes slideIn {
 	from {
 		-webkit-transform: translateY(-20px);
 		transform: translateY(-20px);
 		opacity: 0
 	}
+
 	top {
 		-webkit-transform: translateY(0px);
 		transform: translateY(0px);
 		opacity: 1
 	}
+
 }
+
 @-webkit-keyframes popIn {
 	from {
 		-webkit-transform: scale(0);
 		transform: scale(0)
 	}
+
 	to {
 		-webkit-transform: scale(1);
 		transform: scale(1)
 	}
+
 }
+
 @keyframes popIn {
 	from {
 		-webkit-transform: scale(0);
 		transform: scale(0)
 	}
+
 	to {
 		-webkit-transform: scale(1);
 		transform: scale(1)
 	}
+
 }
+
 @keyframes slideIn {
 	from {
 		-webkit-transform: translateY(-20px);
 		transform: translateY(-20px);
 		opacity: 0
 	}
+
 	top {
 		-webkit-transform: translateY(0px);
 		transform: translateY(0px);
 		opacity: 1
 	}
+
 }
+
 @keyframes popIn {
 	from {
 		-webkit-transform: scale(0);
 		transform: scale(0)
 	}
+
 	to {
 		-webkit-transform: scale(1);
 		transform: scale(1)
 	}
+
 }
-input, button {
+
+input,
+button {
 	font: inherit;
 	outline: none;
 	padding: 10px
 }
-button {
+
+button,
+input[type=submit] {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
 	background: transparent;
@@ -116,40 +239,57 @@ button {
 	display: inline-block;
 	cursor: pointer
 }
+
 button i {
 	font-size: inherit !important;
 	float: left;
 	margin: 18px
 }
+
 button span {
 	padding: 16px;
 	margin-bottom: -3px;
 	float: left
 }
-button:hover {
+
+input[type=submit] {
+	padding: 16px;
+	margin-bottom: -3px;
+}
+
+button:hover,
+input[type=submit]:hover {
 	color: #fff;
 	background: #38A52D
 }
-button:active {
+
+button:active,
+input[type=submit]:active {
 	color: #38A52D;
 	background: #fff;
 	-webkit-transition: none;
 	transition: none
 }
-input:focus, select:focus {
+
+input:focus,
+select:focus {
 	outline: 0
 }
-input[type="radio"], input[type="checkbox"] {
+
+input[type="radio"],
+input[type="checkbox"] {
 	width: 20px;
 	height: 20px;
 	color: #38A52D
 }
+
 select {
 	border: solid 2px #38A52D;
 	background: transparent;
 	font-family: inherit;
 	padding: 8px
 }
+
 .form-text-input {
 	display: -webkit-inline-box;
 	display: -webkit-inline-flex;
@@ -161,6 +301,7 @@ select {
 	align-items: flex-end;
 	border-color: #ddd
 }
+
 .form-text-input input {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
@@ -168,10 +309,13 @@ select {
 	border-bottom: solid 2px #ddd;
 	border-color: inherit
 }
+
 .form-text-input:hover {
 	border-color: #38A52D
 }
-.form-text-input:before, .form-text-input:after {
+
+.form-text-input:before,
+.form-text-input:after {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
 	display: inline-block;
@@ -180,9 +324,11 @@ select {
 	border-color: inherit;
 	height: 8px
 }
+
 table {
 	width: 100%
 }
+
 table th {
 	font-family: 'Gyre Adventor';
 	text-transform: uppercase;
@@ -192,49 +338,62 @@ table th {
 	padding: 12px;
 	border-bottom: solid 2px #222
 }
+
 table th[data-sorted] {
 	color: #38A52D;
 	border-color: #38A52D
 }
+
 table th[data-sorted]:after {
 	margin-left: 4px
 }
+
 table th[data-sorted="desc"]:after {
 	content: '\e07b'
 }
+
 table th[data-sorted="asc"]:after {
 	content: '\e078'
 }
+
 table tr:nth-child(even) td {
 	background: rgba(0, 0, 0, 0.03)
 }
+
 table td {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
-	padding: 12px
+	padding: 12px;
 }
+
 @keyframes slideIn {
 	from {
 		-webkit-transform: translateY(-20px);
 		transform: translateY(-20px);
 		opacity: 0
 	}
+
 	top {
 		-webkit-transform: translateY(0px);
 		transform: translateY(0px);
 		opacity: 1
 	}
+
 }
+
 @keyframes popIn {
 	from {
 		-webkit-transform: scale(0);
 		transform: scale(0)
 	}
+
 	to {
 		-webkit-transform: scale(1);
 		transform: scale(1)
 	}
+
 }
+
 .main {
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -250,18 +409,23 @@ table td {
 	-ms-flex-pack: center;
 	justify-content: center
 }
+
 @media all and (min-width:300px) {
 	.main {
 		font-size: 20px;
 		line-height: 120%
 	}
+
 }
+
 @media all and (max-width:299px) {
 	.main {
 		font-size: 12px;
 		line-height: 120%
 	}
+
 }
+
 .main .login-container {
 	text-align: center;
 	max-width: 600px;
@@ -270,6 +434,7 @@ table td {
 	-webkit-animation: slideIn 0.8s ease-out 0s forwards;
 	animation: slideIn 0.8s ease-out 0s forwards
 }
+
 .main .lc-logotype {
 	text-align: center;
 	margin-bottom: -120px;
@@ -279,26 +444,31 @@ table td {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease
 }
+
 .main .lc-logotype img {
 	width: 100%;
 	max-width: 400px
 }
+
 .main .lc-user:hover {
 	-webkit-transform: translateZ(1px);
 	transform: translateZ(1px)
 }
+
 .main .lc-user:hover .lc-logotype {
 	-webkit-transform: scaleY(0);
 	-ms-transform: scaleY(0);
 	transform: scaleY(0);
 	opacity: 0
 }
+
 .main .lc-user:hover .lc-user-choice {
 	-webkit-transform: scaleY(1);
 	-ms-transform: scaleY(1);
 	transform: scaleY(1);
 	opacity: 1
 }
+
 .main .lc-user-choice {
 	background: url(../images/kolko.png) no-repeat top;
 	background-size: contain;
@@ -312,10 +482,12 @@ table td {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease
 }
+
 .main .lc-user-choice h3 {
 	text-transform: uppercase;
 	font-size: 0.8em
 }
+
 .main .lc-user-choice h3:before {
 	font-family: 'Simple-Line-Icons';
 	content: "\e08e";
@@ -323,6 +495,7 @@ table td {
 	display: block;
 	margin: 30px
 }
+
 .main .lc-user-choice-buttons {
 	margin: 20px 0px;
 	display: -webkit-box;
@@ -334,6 +507,7 @@ table td {
 	-ms-flex-pack: center;
 	justify-content: center
 }
+
 .main .lc-user-choice-buttons label {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
@@ -343,24 +517,31 @@ table td {
 	font-size: 20px;
 	border-bottom: solid 2px transparent
 }
+
 .main .lc-user-choice-buttons input {
 	display: none
 }
+
 .main .lc-user-choice-buttons input:checked+label {
 	border-bottom-color: #38A52D
 }
+
 @media all and (max-width:400px) {
 	.main .lc-user-choice-buttons {
 		margin: 10px
 	}
+
 	.main .lc-user-choice-buttons i {
 		line-height: 3
 	}
+
 }
+
 .main .lc-loginform {
 	margin: 20px;
 	margin-bottom: 20px
 }
+
 .main .lc-field {
 	margin: 10px;
 	display: -webkit-box;
@@ -376,33 +557,41 @@ table td {
 	-ms-flex-align: center;
 	align-items: center
 }
+
 .main .lc-field i {
 	margin: 14px;
 	font-size: 30px
 }
+
 .main .lc-field input {
 	font-size: 0.9em
 }
+
 .main .lc-field a {
 	margin: 20px;
 	color: #38A52D;
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease
 }
+
 .main .lc-field a:hover {
 	color: #1d5517
 }
+
 .main .lc-field a i {
 	font-size: inherit
 }
+
 .main .lc-field p {
 	color: #666;
 	font-size: 0.8em;
 	margin: 20px
 }
+
 .main .lc-submit {
 	margin-top: 20px
 }
+
 .main {
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -419,24 +608,30 @@ table td {
 	justify-content: center;
 	padding: 60px 0px
 }
+
 .main .db-logotype {
 	text-align: right
 }
+
 .main .db-logotype img {
 	max-width: 200px;
 	margin-right: 40px;
 	margin-bottom: 40px
 }
+
 @media all and (max-width:799px) {
 	.main .db-logotype {
 		padding-top: 20px;
 		text-align: left
 	}
+
 	.main .db-logotype img {
 		margin: 10px;
 		max-width: 180px
 	}
+
 }
+
 .main .db-side {
 	border-right: solid 2px #222;
 	-webkit-box-align: start;
@@ -444,6 +639,7 @@ table td {
 	-ms-flex-align: start;
 	align-items: flex-start
 }
+
 @media all and (max-width:799px) {
 	.main .db-side {
 		position: fixed;
@@ -460,6 +656,7 @@ table td {
 		transition: all 0.5s ease;
 		padding-bottom: 20px
 	}
+
 	.main .db-side:before {
 		content: '\e067';
 		display: block;
@@ -479,20 +676,25 @@ table td {
 		z-index: -1;
 		border: solid 2px #222
 	}
+
 	.main .db-side:hover {
 		-webkit-transform: translateX(0%);
 		-ms-transform: translateX(0%);
 		transform: translateX(0%);
 		overflow: auto
 	}
+
 	.main .db-side:hover:before {
 		opacity: 0
 	}
+
 	.main .db-side:hover+.db-side-cloak {
 		opacity: 1;
 		display: block
 	}
+
 }
+
 .main .db-side-cloak {
 	opacity: 0;
 	display: none;
@@ -506,6 +708,7 @@ table td {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease
 }
+
 .main .db-side-group {
 	text-align: right;
 	margin: 20px 30px;
@@ -515,13 +718,16 @@ table td {
 	-ms-flex-item-align: start;
 	align-self: flex-start
 }
+
 @media all and (max-width:799px) {
 	.main .db-side-group {
 		text-align: left;
 		margin: 20px 0px;
 		margin-bottom: 40px
 	}
+
 }
+
 .main .db-side-group:before {
 	content: attr(data-label);
 	font-family: 'Gyre Adventor';
@@ -532,9 +738,11 @@ table td {
 	margin: 20px;
 	margin-top: -5px
 }
+
 .main .db-side-group.active:before {
 	color: #1d5517
 }
+
 .main .db-side-button {
 	margin: 20px;
 	display: block;
@@ -544,6 +752,7 @@ table td {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease
 }
+
 .main .db-side-button.active:after {
 	display: block;
 	position: absolute;
@@ -560,19 +769,25 @@ table td {
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%)
 }
+
 @media all and (max-width:899px) {
 	.main .db-side-button.active:after {
 		display: none
 	}
+
 }
+
 .main .db-side-button i {
 	margin: 10px
 }
+
 @media all and (max-width:899px) {
 	.main .db-side-button {
 		margin: 15px
 	}
+
 }
+
 .main .db-view {
 	font-size: 0.8em;
 	-webkit-box-flex: 1;
@@ -584,50 +799,64 @@ table td {
 	align-self: flex-start;
 	max-width: 760px
 }
+
 @media all and (min-width:900px) {
 	.main .db-view {
 		margin: 0px 50px
 	}
+
 }
+
 @media all and (max-width:899px) {
 	.main .db-view {
 		margin: 0px;
 		max-width: 9999px !important
 	}
+
 }
+
 .main .db-breadcrumbs {
 	padding: 10px
 }
+
 .main .db-brdcmb-item {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease
 }
+
 .main .db-brdcmb-item+.db-brdcmb-item:before {
 	content: '>';
 	cursor: default;
 	color: #222
 }
+
 .main table tr .icon-settings {
 	opacity: 0;
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease
 }
+
 @media all and (max-width:899px) {
 	.main table tr .icon-settings {
 		opacity: 1 !important
 	}
+
 }
+
 .main table tr:hover .icon-settings {
 	opacity: 1
 }
+
 .db-logged {
 	text-align: center
 }
+
 .db-logged .db-logged-container {
 	margin-top: 40px;
 	-webkit-animation: slideIn 0.8s ease-out 0s forwards;
 	animation: slideIn 0.8s ease-out 0s forwards
 }
+
 .db-logged .db-logged-icon-ok {
 	width: 180px;
 	height: 180px;
@@ -642,6 +871,7 @@ table td {
 	-webkit-animation: popIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) 0.4s forwards;
 	animation: popIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) 0.4s forwards
 }
+
 .db-logged .db-logged-icon-ok:before {
 	content: '\e068';
 	font-family: 'Simple-Line-Icons';
@@ -649,6 +879,7 @@ table td {
 	line-height: 160px;
 	color: #eee
 }
+
 .db-logged .db-logged-icon-wait {
 	width: 180px;
 	height: 180px;
@@ -663,6 +894,7 @@ table td {
 	-webkit-animation: popIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) 0.4s forwards;
 	animation: popIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) 0.4s forwards
 }
+
 .db-logged .db-logged-icon-wait:before {
 	content: '\e018';
 	font-family: 'Simple-Line-Icons';
@@ -670,23 +902,28 @@ table td {
 	line-height: 160px;
 	color: #eee
 }
+
 .db-logged .db-logged-gratz {
 	text-transform: uppercase;
 	margin-top: 40px
 }
+
 .db-logged h3 {
 	font-size: 20px;
 	margin: 20px;
 	text-transform: uppercase;
 	font-weight: 700
 }
+
 .db-logged button {
 	margin: 40px auto
 }
+
 .db-logged button i {
 	margin: 18px;
 	margin-right: 12px
 }
+
 .db-profile .db-profile-avatar {
 	overflow: hidden;
 	width: 100px;
@@ -695,48 +932,67 @@ table td {
 	margin: 40px;
 	margin-top: 20px
 }
+
 .db-profile .db-profile-avatar img {
 	width: 100%;
 	height: auto
 }
+
 @media all and (min-width:800px) {
 	.db-profile .db-profile-avatar {
 		float: left
 	}
+
 }
+
 .db-profile .db-profile-data {
 	margin-top: 40px
 }
+
 @media all and (min-width:800px) {
 	.db-profile .db-profile-data {
 		margin-left: 180px
 	}
+
 }
+
 .db-profile .db-profile-data tr td:first-child {
 	width: 1px;
 	white-space: nowrap;
 	font-weight: 700
 }
+
 body {
 	font-family: 'Sinkin Sans';
 	line-height: 120%
 }
+
 a {
 	text-decoration: none;
 	color: inherit
 }
-a:hover, a.active {
+
+a:hover,
+a.active {
 	color: #38A52D
 }
+
 a.active:hover {
 	color: #1d5517
 }
+
 p {
 	line-height: 140%
 }
+
 h2 {
 	font-size: 2.4em;
 	font-family: 'Gyre Adventor';
 	line-height: 120%;
 	margin: 20px 10px
+}
+
+td
+{
+		vertical-align: middle;
 }

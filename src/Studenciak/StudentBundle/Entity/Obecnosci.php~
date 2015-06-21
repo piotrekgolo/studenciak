@@ -23,14 +23,14 @@ class Obecnosci
 
      /**
       * @ORM\ManyToOne(targetEntity="Osoba")
-      * @ORM\JoinColumn(name="obecnosci_osoba", referencedColumnName="id_osoby")
+      * @ORM\JoinColumn(name="id_osoby", referencedColumnName="id_osoby")
       */
     protected $id_osoby;
     
 
      /**
       * @ORM\ManyToOne(targetEntity="Zajecia")
-      * @ORM\JoinColumn(name="obecnosci_zajecia", referencedColumnName="id_zajecia")
+      * @ORM\JoinColumn(name="id_zajecia", referencedColumnName="id_zajecia")
       */
     protected $id_zajecia;
     

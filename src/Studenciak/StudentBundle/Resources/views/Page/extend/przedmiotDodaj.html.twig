@@ -22,14 +22,35 @@
 
 
 <div class="db-logged" >
-<h2>Dodawanie przedmiotu</h2>
+	<h2>Dodawanie przedmiotu</h2>
 	<br />
-	<form action="{{ path('przedmiotPokaz',  {'id' : '2'}) }}" method="post" {{ form_enctype(form) }}>
 
-		{{ form_widget(form) }}
 
-		<input type="submit" />
-	</form>
+	{{ form_start(form) }}
+	{{ form_errors(form) }}
+
+	<table>
+		<tr>
+			<td>{{ form_label(form.nazwa) }}</td>
+			<td><span class="form-text-input">{{ form_widget(form.nazwa) }}{{ form_errors(form.nazwa) }}</span></td>
+		</tr>
+		<tr>
+			<td>{{ form_label(form.haslo) }}</td>
+			<td><span class="form-text-input">{{ form_widget(form.haslo) }}{{ form_errors(form.haslo) }}</td>
+		</tr>
+		<tr>
+			<td>{{ form_label(form.semestr) }}</td>
+			
+			<td>{{ form_widget(form.semestr) }}{{ form_errors(form.semestr) }}</td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" /></td>
+		</tr>
+	</table>
+
+	
+
+	{{ form_end(form) }}
 
 </div>
 

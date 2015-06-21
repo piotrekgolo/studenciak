@@ -23,14 +23,14 @@ class Oceny
 
      /**
             * @ORM\ManyToOne(targetEntity="Kurs")
-      * @ORM\JoinColumn(name="oceny_kurs", referencedColumnName="id_kursu")
+      * @ORM\JoinColumn(name="id_kursu", referencedColumnName="id_kursu")
       */
     protected $id_kursu;
     
 
      /**
       * @ORM\ManyToOne(targetEntity="Osoba")
-      * @ORM\JoinColumn(name="oceny_osoba", referencedColumnName="id_osoby")
+      * @ORM\JoinColumn(name="id_osoby", referencedColumnName="id_osoby")
       */
     protected $id_osoby;
     

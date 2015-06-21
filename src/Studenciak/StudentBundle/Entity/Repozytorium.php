@@ -23,14 +23,14 @@ class Repozytorium
 
       /**
       * @ORM\ManyToOne(targetEntity="Przedmiot")
-      * @ORM\JoinColumn(name="repo_przedmiot", referencedColumnName="id_przedmiotu")
+      * @ORM\JoinColumn(name="id_przedmiotu", referencedColumnName="id_przedmiotu")
       */
 
     protected $id_przedmiotu;
     
       /**
       * @ORM\ManyToOne(targetEntity="Osoba")
-      * @ORM\JoinColumn(name="repo_osoba", referencedColumnName="id_osoby")
+      * @ORM\JoinColumn(name="id_osoby", referencedColumnName="id_osoby")
       */
     protected $id_osoby;
     

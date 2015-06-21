@@ -19,7 +19,11 @@ class PageController extends Controller
 
 	public function przedmiotAction()
 	{
-		return $this->render('StudenciakBundle:Page:extend/przedmiot.html.twig');
+
+		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Przedmiot');
+		$przedmioty = $repo->findAll();
+
+		return $this->render('StudenciakBundle:Page:extend/przedmiot.html.twig', array('przedmioty' => $przedmioty));
 	}
 
 	public function repoAction()
@@ -167,21 +171,30 @@ class PageController extends Controller
 
 	public function przedmiotDodajAction(Request $request)
 	{
+		$em = $this->getDoctrine()->getManager();
 
 		$session = $this->getRequest()->getSession();
 		if ($session->get('admin'))
 		{
-			$przedmiot = new Przedmiot();
+			$osoba = $em->getRepository('StudenciakBundle:Osoba')->findOneByEmail($session->get('email'));	//pobieramy siebie z bazy
 
+			$przedmiot = new Przedmiot();
+			$przedmiot->setIdOsoby($osoba);			//dodajemy siebie jako prowadzącego przedmiot
 
 			$form = $this->createFormBuilder($przedmiot)
-			->add('nazwa', 'text')
-			->add('haslo', 'text')
+			->add('nazwa', 'text', array('label'  => 'Nazwa kursu', 'max_length' => 255))
+			->add('haslo', 'text', array('label'  => 'Hasło do kursu', 'max_length' => 255))
+			->add('semestr', 'integer', array('label'  => 'Semestr', 'data' => 1))
 			->getForm();
 
+								//'choices' => array('m' => 'Male','f' => 'Female') type choice
 
 			$form->handleRequest($request);
 			if ($form->isValid()) {
+
+				$task = $form->getData();
+				$em->persist($task);
+				$em->flush();
 
 				return $this->redirect($this->generateUrl('profil'));
 			}

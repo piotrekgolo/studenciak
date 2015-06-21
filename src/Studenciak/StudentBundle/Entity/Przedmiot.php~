@@ -5,6 +5,7 @@
 namespace Studenciak\StudentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
 * @ORM\Entity
 * @ORM\Table(name="przedmiot")
@@ -22,7 +23,7 @@ class Przedmiot
 
       /**
       * @ORM\ManyToOne(targetEntity="Osoba")
-      * @ORM\JoinColumn(name="przedmiot_osoba", referencedColumnName="id_osoby")
+      * @ORM\JoinColumn(name="id_osoby", referencedColumnName="id_osoby")
       */
 
     protected $id_osoby;
@@ -34,6 +35,12 @@ class Przedmiot
 
      /**
       * @ORM\Column(type="integer")
+       * @Assert\Range(
+     *      min = 1,
+     *      max = 8,
+     *      minMessage = "Minimalna wartość to 1",
+     *      maxMessage = "Maksymalna wartość to 8"
+     * )
       */
     protected $semestr;
     
