@@ -30,6 +30,7 @@
 {% endif %}
 
 
+
 <h2>Moje przedmioty</h2>
 <table>
     <tr>
@@ -43,7 +44,7 @@
     {% for przedmiot in przedmioty %}
 
     <tr>
-        <td>{{ przedmiot.getNazwa }}</td>
+        <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
         <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
         <td>{{ przedmiot.getSemestr }}</td>
         <td><i class="icon-settings"></i></td>

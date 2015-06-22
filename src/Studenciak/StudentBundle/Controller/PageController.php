@@ -5,9 +5,12 @@ namespace Studenciak\StudentBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 
 use Studenciak\StudentBundle\Entity\Osoba;
 use Studenciak\StudentBundle\Entity\Przedmiot;
+use Studenciak\StudentBundle\Entity\Kurs;
+
 
 class PageController extends Controller
 {
@@ -20,8 +23,8 @@ class PageController extends Controller
 	public function przedmiotAction()
 	{
 
-		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Przedmiot');
-		$przedmioty = $repo->findAll();
+		$em = $this->getDoctrine()->getRepository('StudenciakBundle:Przedmiot');
+		$przedmioty = $em->findAll();
 
 		return $this->render('StudenciakBundle:Page:extend/przedmiot.html.twig', array('przedmioty' => $przedmioty));
 	}
@@ -41,8 +44,8 @@ class PageController extends Controller
 		$session = $this->getRequest()->getSession();
 		if ($session->get('admin'))
 		{
-			$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
-			$osoby = $repo->findAll();
+			$em = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
+			$osoby = $em->findAll();
 
 			return $this->render('StudenciakBundle:Page:extend/osoby.html.twig', array('osoby' => $osoby));
 		}
@@ -205,12 +208,10 @@ class PageController extends Controller
 			$przedmiot->setIdOsoby($osoba);			//dodajemy siebie jako prowadzącego przedmiot
 
 			$form = $this->createFormBuilder($przedmiot)
-			->add('nazwa', 'text', array('label'  => 'Nazwa kursu', 'max_length' => 255))
-			->add('haslo', 'text', array('label'  => 'Hasło do kursu', 'max_length' => 255))
+			->add('nazwa', 'text', array('label'  => 'Nazwa przedmiotu', 'max_length' => 255))
+			->add('haslo', 'text', array('label'  => 'Hasło do przedmiotu', 'max_length' => 255))
 			->add('semestr', 'integer', array('label'  => 'Semestr', 'data' => 1))
 			->getForm();
-
-								//'choices' => array('m' => 'Male','f' => 'Female') type choice
 
 			$form->handleRequest($request);
 			if ($form->isValid()) {
@@ -219,7 +220,7 @@ class PageController extends Controller
 				$em->persist($task);
 				$em->flush();
 
-				return $this->redirect($this->generateUrl('profil'));
+				return $this->redirect($this->generateUrl('przedmiotPokaz', array('id' => $przedmiot->getIdPrzedmiotu())));
 			}
 
 			return $this->render('StudenciakBundle:Page:extend/przedmiotDodaj.html.twig', array('form' => $form->createView()));
@@ -231,7 +232,56 @@ class PageController extends Controller
 
 	public function przedmiotPokazAction($id)
 	{
-		return $this->render('StudenciakBundle:Page:extend/przedmiotPokaz.html.twig', array('id'=>$id));
+		$em = $this->getDoctrine()->getManager();
+		$przedmiot = $em->getRepository('StudenciakBundle:Przedmiot')->find($id);
+		$kursy = $em->getRepository('StudenciakBundle:Kurs')->findBy(array('id_przedmiotu' => $id));
+
+		return $this->render('StudenciakBundle:Page:extend/przedmiotPokaz.html.twig', array('przedmiot'=>$przedmiot, 'kursy' => $kursy));
+	}
+
+
+
+	public function przedmiotKursDodajAction(Request $request, $id_przedmiotu)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$session = $this->getRequest()->getSession();
+		if ($session->get('admin'))
+		{
+			$przedmiot = $em->getRepository('StudenciakBundle:Przedmiot')->find($id_przedmiotu);
+			$nauczyciele = $em->getRepository('StudenciakBundle:Osoba')->findBy(array('admin' => 1));	//pobieramy nauczycieli
+
+			$wybor_nauczycieli = new ObjectChoiceList($nauczyciele, 'nazwisko', array(), null, 'id_osoby');	//lista wyboru nauczycieli
+
+			$kurs = new Kurs();
+			$kurs->setIdPrzedmiotu($przedmiot);			//id przedmiotu do ktorego dodajemy
+
+			$form = $this->createFormBuilder($kurs)
+			->add('id_osoby', 'choice', array('label'  => 'Prowadzący', 
+				'choice_list' => $wybor_nauczycieli))
+			->add('typ_zajec', 'choice', array('label'  => 'Typ zajęć', 
+				'choices' => array('w' => 'wykład','c' => 'ćwiczenia', 'l' => 'laboratorium', 'p'=> 'projekt')))
+			->add('sala', 'text', array('label'  => 'Sala', 'max_length' => 45))
+			->add('termin', 'datetime', array('label'  => 'Pierwsze zajęcia'))
+			->getForm();
+
+
+
+			$form->handleRequest($request);
+			if ($form->isValid()) {
+			
+				$task = $form->getData();
+				$em->persist($task);
+				$em->flush();
+
+				return $this->redirect($this->generateUrl('przedmiotPokaz', array('id' => $id_przedmiotu)));
+			}
+
+			return $this->render('StudenciakBundle:Page:extend/przedmiotKursDodaj.html.twig', array('form' => $form->createView()));
+		}
+
+		else
+			return $this->redirect($this->generateUrl('przedmiot'));
 	}
 
 }

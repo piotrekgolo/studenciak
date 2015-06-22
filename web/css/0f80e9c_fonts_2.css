@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'Sinkin Sans';
+    src: url('../../Resources/public/fonts/sinkin-sans/SinkinSans-400Regular.otf');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Gyre Adventor';
+    src: url(../../Resources/public/fonts/TeX-Gyre-Adventor/texgyreadventor-regular.otf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Gyre Adventor';
+    src: url(../../Resources/public/fonts/TeX-Gyre-Adventor/texgyreadventor-bold.otf);
+    font-weight: 700;
+}

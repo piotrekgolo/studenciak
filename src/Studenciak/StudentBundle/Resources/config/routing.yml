@@ -50,6 +50,10 @@ osobaUsuwanie:
     path: /usuwanie/{id}
     defaults: { _controller: StudenciakBundle:Page:osobaUsuwanie }
 
+osobaAdmin:
+    path: /osoby/admin/{tryb}/{id}
+    defaults: { _controller: StudenciakBundle:Page:osobaAdmin }  
+
 aktywuj:
     path: /osoby/aktywuj/{id}
     defaults: { _controller: StudenciakBundle:Page:aktywuj }
@@ -62,6 +66,6 @@ przedmiotPokaz:
     path: /przedmiot/pokaz/{id}
     defaults: { _controller: StudenciakBundle:Page:przedmiotPokaz }
 
-osobaAdmin:
-    path: /osoby/admin/{tryb}/{id}
-    defaults: { _controller: StudenciakBundle:Page:osobaAdmin }  
+przedmiotKursDodaj:
+    path: /przedmiot/kurs/dodaj/{id_przedmiotu}
+    defaults: { _controller: StudenciakBundle:Page:przedmiotKursDodaj }

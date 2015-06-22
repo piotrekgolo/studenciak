@@ -27,12 +27,6 @@ class Kurs
       */
 	protected $id_osoby;
 	
-
-     /**
-      * @ORM\ManyToOne(targetEntity="Zajecia")
-      * @ORM\JoinColumn(name="id_zajec", referencedColumnName="id_zajecia")
-      */
-	protected $id_zajec;
 	
 
      /**
@@ -52,6 +46,12 @@ class Kurs
       */
     protected $termin;
 
+
+     /**
+      * @ORM\ManyToOne(targetEntity="Przedmiot")
+      * @ORM\JoinColumn(name="id_przedmiotu", referencedColumnName="id_przedmiotu")
+      */
+    protected $id_przedmiotu;
 
     /**
      * Get id_kursu
@@ -176,5 +176,28 @@ class Kurs
     public function getTermin()
     {
         return $this->termin;
+    }
+
+    /**
+     * Set id_przedmiotu
+     *
+     * @param \Studenciak\StudentBundle\Entity\Przedmiot $idPrzedmiotu
+     * @return Kurs
+     */
+    public function setIdPrzedmiotu(\Studenciak\StudentBundle\Entity\Przedmiot $idPrzedmiotu = null)
+    {
+        $this->id_przedmiotu = $idPrzedmiotu;
+
+        return $this;
+    }
+
+    /**
+     * Get id_przedmiotu
+     *
+     * @return \Studenciak\StudentBundle\Entity\Przedmiot 
+     */
+    public function getIdPrzedmiotu()
+    {
+        return $this->id_przedmiotu;
     }
 }

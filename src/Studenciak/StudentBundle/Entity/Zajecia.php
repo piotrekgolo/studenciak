@@ -18,7 +18,7 @@ class Zajecia
       * @ORM\Column(type="integer")
       * @ORM\GeneratedValue(strategy="AUTO")
       */
-	protected $id_zajecia;
+	protected $id_zajec;
 	
 
      /**
@@ -32,7 +32,11 @@ class Zajecia
       */
 	protected $data;
 	
-
+     /**
+      * @ORM\ManyToOne(targetEntity="Kurs")
+      * @ORM\JoinColumn(name="id_kursu", referencedColumnName="id_kursu")
+      */
+    protected $id_kursu;
 
     /**
      * Get id_zajecia
@@ -88,5 +92,38 @@ class Zajecia
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * Get id_zajec
+     *
+     * @return integer 
+     */
+    public function getIdZajec()
+    {
+        return $this->id_zajec;
+    }
+
+    /**
+     * Set id_kursu
+     *
+     * @param \Studenciak\StudentBundle\Entity\Kurs $idKursu
+     * @return Zajecia
+     */
+    public function setIdKursu(\Studenciak\StudentBundle\Entity\Kurs $idKursu = null)
+    {
+        $this->id_kursu = $idKursu;
+
+        return $this;
+    }
+
+    /**
+     * Get id_kursu
+     *
+     * @return \Studenciak\StudentBundle\Entity\Kurs 
+     */
+    public function getIdKursu()
+    {
+        return $this->id_kursu;
     }
 }

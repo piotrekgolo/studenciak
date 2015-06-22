@@ -284,16 +284,11 @@ input[type="checkbox"] {
 }
 
 select {
-	border:2px solid #ddd;
+	border: solid 2px #38A52D;
 	background: transparent;
 	font-family: inherit;
 	padding: 8px
 }
-
-select:hover, select:active {
-	border: solid 2px #38A52D;
-}
-
 
 .form-text-input {
 	display: -webkit-inline-box;
@@ -475,7 +470,7 @@ table td {
 }
 
 .main .lc-user-choice {
-	background: url(../images/kolko.png) no-repeat top;
+	background: url(../../Resources/public/images/kolko.png) no-repeat top;
 	background-size: contain;
 	-webkit-transform: scaleY(0);
 	-ms-transform: scaleY(0);

@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'Sinkin Sans';
+    src: url('../../bundles/studenciak/fonts/sinkin-sans/SinkinSans-400Regular.otf');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Gyre Adventor';
+    src: url(../../bundles/studenciak/fonts/TeX-Gyre-Adventor/texgyreadventor-regular.otf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Gyre Adventor';
+    src: url(../../bundles/studenciak/fonts/TeX-Gyre-Adventor/texgyreadventor-bold.otf);
+    font-weight: 700;
+}

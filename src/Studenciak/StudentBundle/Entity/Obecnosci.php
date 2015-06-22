@@ -30,9 +30,9 @@ class Obecnosci
 
      /**
       * @ORM\ManyToOne(targetEntity="Zajecia")
-      * @ORM\JoinColumn(name="id_zajecia", referencedColumnName="id_zajecia")
+      * @ORM\JoinColumn(name="id_zajec", referencedColumnName="id_zajec")
       */
-    protected $id_zajecia;
+    protected $id_zajec;
     
 
 
@@ -90,5 +90,28 @@ class Obecnosci
     public function getIdZajecia()
     {
         return $this->id_zajecia;
+    }
+
+    /**
+     * Set id_zajec
+     *
+     * @param \Studenciak\StudentBundle\Entity\Zajecia $idZajec
+     * @return Obecnosci
+     */
+    public function setIdZajec(\Studenciak\StudentBundle\Entity\Zajecia $idZajec = null)
+    {
+        $this->id_zajec = $idZajec;
+
+        return $this;
+    }
+
+    /**
+     * Get id_zajec
+     *
+     * @return \Studenciak\StudentBundle\Entity\Zajecia 
+     */
+    public function getIdZajec()
+    {
+        return $this->id_zajec;
     }
 }

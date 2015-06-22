@@ -1,6 +1,6 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
-{% block title %}Przedmioty{% endblock %}
+{% block title %}Kursy{% endblock %}
 
 {% block general %}active{% endblock %}
 {% block przedmiot %}active{% endblock %}
@@ -22,16 +22,55 @@
 {% if app.session.get('admin') == 1 %} 
 
 <div class="db-logged" >
-    <a href="{{path('przedmiotDodaj')}}">
-    <button><i class="icon-plus"></i><span>Dodaj przedmiot</span></button>
+    <a href="{{path('przedmiotKursDodaj', {'id_przedmiotu': przedmiot.getIdPrzedmiotu})}}">
+    <button><i class="icon-plus"></i><span>Dodaj kurs</span></button>
     </a>
 </div>
 
 {% endif %}
 
+<h2>{{ przedmiot.getNazwa }}</h2>
+Prowadzący: {{ przedmiot.getIdOsoby.getNazwisko }}
+<br />
 
-<h2>JAKIS PRZEDMIOT</h2>
-tu cos o nim
-{{ id }}
+
+{% if kursy is empty %} 
+<br />
+Brak kursów dla wybranego przedmiotu
+{% else %}
+
+
+<table>
+    <tr>
+        <th width="30%">Termin</th>
+        <th width="40%">Prowadzący</th>
+        <th width="15%">Sala</th>
+        <th width="15%">Rodzaj</th>
+    </tr>
+
+
+    {% for kurs in kursy %}
+
+        <tr>
+            <td><a href="#">{{ kurs.getTermin|date("D,  G:i ") }}</a></td>
+            <td>{{ kurs.getIdOsoby.getNazwisko}}</td>
+            <td>{{ kurs.getSala }}</td>
+            <td>
+                {% if (kurs.getTypZajec == 'l') %} laboratorium
+                    {% elseif (kurs.getTypZajec == 'w') %} wykład
+                    {% elseif (kurs.getTypZajec == 'c') %} ćwiczenia
+                    {% elseif (kurs.getTypZajec == 'p') %} projekt
+                {% endif %}
+            </td>
+        </tr>
+
+
+
+    {% endfor %}
+</table>
+
+
+
+{% endif %}
 {% endblock %}
 
