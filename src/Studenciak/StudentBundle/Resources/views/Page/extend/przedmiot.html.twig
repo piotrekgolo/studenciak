@@ -1,58 +1,64 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
-{% block title %}Przedmioty{% endblock %}
+{% block title %}
+    Przedmioty
+{% endblock %}
 
-{% block general %}active{% endblock %}
-{% block przedmiot %}active{% endblock %}
+{% block general %}
+    active
+{% endblock %}
+{% block przedmiot %}
+    active
+{% endblock %}
 
 {% block view %}
-<div class="db-breadcrumbs">
-    <a class="db-brdcmb-item" href="#">
-        <i class="icon-home"></i>
-    </a>
-    <a class="db-brdcmb-item" href="#">
-        Ogólne
-    </a>
-    <a class="db-brdcmb-item" href="#">
-        Kursy
-    </a>
-</div>
+    <div class="db-breadcrumbs">
+        <a class="db-brdcmb-item" href="#">
+            <i class="icon-home"></i>
+        </a>
+        <a class="db-brdcmb-item" href="#">
+            Ogólne
+        </a>
+        <a class="db-brdcmb-item" href="#">
+            Kursy
+        </a>
+    </div>
 
 
-{% if app.session.get('admin') == 1 %} 
+    {% if app.session.get('admin') == 1 %} 
 
-<div class="db-logged" >
-    <a href="{{path('przedmiotDodaj')}}">
-        <button><i class="icon-plus"></i><span>Dodaj przedmiot</span></button>
-    </a>
-</div>
+        <div class="db-logged" >
+            <a href="{{path('przedmiotDodaj')}}">
+                <button><i class="icon-plus"></i><span>Dodaj przedmiot</span></button>
+            </a>
+        </div>
 
-{% endif %}
-
-
-
-<h2>Moje przedmioty</h2>
-<table>
-    <tr>
-        <th data-sorted="desc" width="50%">Nazwa</th>
-        <th width="40%">Prowadzący</th>
-        <th width="5%">Semestr</th>
-        <th width="5%"></th>
-    </tr>
-
-
-    {% for przedmiot in przedmioty %}
-
-    <tr>
-        <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
-        <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
-        <td>{{ przedmiot.getSemestr }}</td>
-        <td><i class="icon-settings"></i></td>
-    </tr>
+    {% endif %}
 
 
 
-    {% endfor %}
-</table>
+    <h2>Moje przedmioty</h2>
+    <table>
+        <tr>
+            <th data-sorted="desc" width="50%">Nazwa</th>
+            <th width="40%">Prowadzący</th>
+            <th width="5%">Semestr</th>
+            <th width="5%"></th>
+        </tr>
+
+
+        {% for przedmiot in przedmioty %}
+
+            <tr>
+                <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
+                <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
+                <td>{{ przedmiot.getSemestr }}</td>
+                <td><i class="icon-settings"></i></td>
+            </tr>
+
+
+
+        {% endfor %}
+    </table>
 {% endblock %}
 

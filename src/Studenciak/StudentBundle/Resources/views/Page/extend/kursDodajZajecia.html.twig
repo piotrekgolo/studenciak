@@ -1,7 +1,7 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
 {% block title %}
-	Dodaj kurs
+	Dodaj zajecia
 {% endblock %}
 
 {% block general %}
@@ -28,7 +28,7 @@
 
 
 		<div class="db-logged" >
-			<h2>Dodawanie kursu</h2>
+			<h2>Dodawanie zajęć</h2>
 			<br />
 
 
@@ -37,23 +37,19 @@
 
 			<table>
 				<tr>
-					<td>{{ form_label(form.id_osoby) }}</td>
-					<td>{{ form_widget(form.id_osoby) }}{{ form_errors(form.id_osoby) }}</td>
+					<td>{{ form_label(form.data_zajec) }}</td>
+					<td>{{ form_widget(form.data_zajec) }}{{ form_errors(form.data_zajec) }}</td>
 				</tr>
 				<tr>
-					<td>{{ form_label(form.typ_zajec) }}</td>
-					<td>{{ form_widget(form.typ_zajec) }}{{ form_errors(form.typ_zajec) }}</td>
+					<td>{{ form_label(form.temat) }}</td>
+					<td><span class="form-text-input">{{ form_widget(form.temat) }}{{ form_errors(form.temat) }}</span></td>
 				</tr>
 				<tr>
-					<td>{{ form_label(form.sala) }}</td>
-					<td><span class="form-text-input">{{ form_widget(form.sala) }}{{ form_errors(form.sala) }}</span></td>
+					<td>{{ form_label(form.kolejne) }}</td>
+					<td>{{ form_widget(form.kolejne) }}{{ form_errors(form.kolejne) }}</td>
 				</tr>
 				<tr>
-					<td>{{ form_label(form.termin) }}</td>	
-					<td>{{ form_widget(form.termin) }}{{ form_errors(form.termin) }}</td>
-				</tr>
-				<tr>
-					<td colspan="2"><input type="submit" value="Dodaj kurs" /></td>
+					<td colspan="2"><input type="submit" value="Dodaj zajecia" /></td>
 				</tr>
 			</table>
 

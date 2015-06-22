@@ -34,9 +34,9 @@ login:
     path:     /login
     defaults: { _controller: StudenciakBundle:Page:login }
 
-Ajax_Update_MyData:
+loginAjax:
     pattern:  /update/data/from/ajax/call
-    defaults: { _controller: StudenciakBundle:Page:AjaxUpdateData }
+    defaults: { _controller: StudenciakBundle:Page:loginAjax }
 
 logoutSession:
     path:     /logoutSession
@@ -69,3 +69,21 @@ przedmiotPokaz:
 przedmiotKursDodaj:
     path: /przedmiot/kurs/dodaj/{id_przedmiotu}
     defaults: { _controller: StudenciakBundle:Page:przedmiotKursDodaj }
+
+kursPokaz:
+    path: /kurs/{id}
+    defaults: { _controller: StudenciakBundle:Page:kursPokaz }
+
+kursDodajZajecia:
+    path: /kurs/dodajZajecia/{id}
+    defaults: { _controller: StudenciakBundle:Page:kursDodajZajecia }
+
+
+
+
+
+
+
+test:
+    path: /test/{id}
+    defaults: { _controller: StudenciakBundle:Page:test }    

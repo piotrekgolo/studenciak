@@ -6,10 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Studenciak\StudentBundle\Entity\Osoba;
 use Studenciak\StudentBundle\Entity\Przedmiot;
 use Studenciak\StudentBundle\Entity\Kurs;
+use Studenciak\StudentBundle\Entity\Zajecia;
 
 
 class PageController extends Controller
@@ -45,7 +47,7 @@ class PageController extends Controller
 		if ($session->get('admin'))
 		{
 			$em = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
-			$osoby = $em->findAll();
+			$osoby = $em->findBy(array(), array('email'=>'ASC'));
 
 			return $this->render('StudenciakBundle:Page:extend/osoby.html.twig', array('osoby' => $osoby));
 		}
@@ -87,13 +89,14 @@ class PageController extends Controller
 		return $this->render('StudenciakBundle:Page:extend/login.html.twig');
 	}
 
-	public function AjaxUpdateDataAction()
+	public function loginAjaxAction()
 	{
 		$request = $this->container->get('request');
 		$name = $request->request->get('name');
 		$image = $request->request->get('image');
 		$email = $request->request->get('email');
 
+		$em = $this->getDoctrine()->getManager();
 
 		$akceptowany = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba')->findOneByEmail($email);
 
@@ -109,7 +112,6 @@ class PageController extends Controller
 			$osoba->SetAdmin(0);
 			$osoba->SetAktywny(0);
 
-			$em = $this->getDoctrine()->getManager();
 			$em->persist($osoba);
 			$em->flush();
 		}
@@ -121,6 +123,16 @@ class PageController extends Controller
 			else
 			{
 				$response = array("code" => 'akceptowany');
+
+				/// uaktualnienie danych 
+				if (($akceptowany->getNazwisko() != $name) || ($akceptowany->getZdjecie() != $image))
+				{
+					$akceptowany->SetZdjecie($image); 
+					$akceptowany->setNazwisko($name);
+					$em->flush();
+				}
+
+
 
 				$session = $this->getRequest()->getSession();
 				$session->set('name', $name);
@@ -210,7 +222,7 @@ class PageController extends Controller
 			$form = $this->createFormBuilder($przedmiot)
 			->add('nazwa', 'text', array('label'  => 'Nazwa przedmiotu', 'max_length' => 255))
 			->add('haslo', 'text', array('label'  => 'Hasło do przedmiotu', 'max_length' => 255))
-			->add('semestr', 'integer', array('label'  => 'Semestr', 'data' => 1))
+			->add('semestr', 'integer', array('label'  => 'Semestr', 'data' => 1, 'attr' => array('min' => '1', 'max' => '8')))
 			->getForm();
 
 			$form->handleRequest($request);
@@ -269,7 +281,7 @@ class PageController extends Controller
 
 			$form->handleRequest($request);
 			if ($form->isValid()) {
-			
+
 				$task = $form->getData();
 				$em->persist($task);
 				$em->flush();
@@ -283,5 +295,78 @@ class PageController extends Controller
 		else
 			return $this->redirect($this->generateUrl('przedmiot'));
 	}
+
+	public function kursPokazAction($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$kurs = $em->getRepository('StudenciakBundle:Kurs')->find($id);
+		$zajecia = $em->getRepository('StudenciakBundle:Zajecia')->findBy(array('id_kursu' => $id), array('data_zajec' => 'ASC'));		
+
+		return $this->render('StudenciakBundle:Page:extend/kursPokaz.html.twig', array('kurs' => $kurs, 'zajecia' => $zajecia));
+	}
+
+	public function kursDodajZajeciaAction(Request $request, $id)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$session = $this->getRequest()->getSession();
+		if ($session->get('admin'))
+		{
+			$kurs = $em->getRepository('StudenciakBundle:Kurs')->find($id);
+			$zajecia = new Zajecia();
+			$zajecia->setIdKursu($kurs);
+
+			$data_kursu = new \DateTime($kurs->getTermin()->format('Y-m-d H:i:s'));
+
+			$form = $this->createFormBuilder($zajecia)
+			->add('temat', 'text', array('label'  => 'Temat zajęć', 'max_length' => 255))
+			->add('data_zajec', 'date', array('label'  => 'Data zajęć',  'data' => $data_kursu))
+			->add('kolejne', 'integer', array('label'  => 'Powtórzenie zajęć w następnych tygodniach', 'data' => 0,
+				'mapped' => false, 'attr' => array('min' => '0', 'max' => '15')))
+			->getForm();
+
+			$form->handleRequest($request);
+			if ($form->isValid()) 
+			{
+
+				$z = $form->get('kolejne')->getData();
+				$data_kursu = $form->get('data_zajec')->getData();
+
+				$task = $form->getData();
+				$em->persist($task);
+				$em->flush();
+
+				if ($z)
+				{
+					for ($i=1; $i <= $z; $i++) { 
+						$zajeciax = new Zajecia();
+						$zajeciax->setIdKursu($kurs);
+
+						$zajeciax->setTemat('Brak tematu');
+						
+						$data_nowa = $data_kursu;
+						$data_nowa->add(new \DateInterval('P7D'));
+
+						$zajeciax->setDataZajec($data_nowa);
+						$em->persist($zajeciax);
+						$em->flush();
+					}
+				}
+
+				return $this->redirect($this->generateUrl('test', array('id' => $z)));
+			}
+
+			return $this->render('StudenciakBundle:Page:extend/kursDodajZajecia.html.twig', array('form' => $form->createView()));
+		}
+
+		else
+			return $this->redirect($this->generateUrl('przedmiot'));
+	}
+
+	public function testAction($id)
+	{
+		return $this->render('StudenciakBundle:Page:extend/test.html.twig', array('id' => $id));
+	}
+
 
 }

@@ -1,49 +1,55 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
-{% block title %}Osoby{% endblock %}
+{% block title %}
+  Osoby
+{% endblock %}
 
-{% block general %}active{% endblock %}
-{% block osoby %}active{% endblock %}
+{% block general %}
+  active
+{% endblock %}
+{% block osoby %}
+  active
+{% endblock %}
 
 {% block view %}
-<table>
-  <tr>
-    <th style="width: 10%">Avatar</th>
-    <th style="width: 30%">Imię i nazwisko</th>
-    <th style="width: 40%">E-mail</th>
-    <th style="width: 10%; padding-right: 0px">Aktywuj/<br/>Usuń</th>
-    <th style="width: 10%">Admin</th>
-  </tr>
-  {% for osoba in osoby %}
-  <tr>
-    <td>
-      {% if osoba.getZdjecie == null %}
-      {% image 'bundles/studenciak/images/empty_avatar.jpg' %}
-      <img src="{{ asset_url }}" alt="Studenciak" />
-      {% endimage %}
-      {% else %}
-      <img src="{{ osoba.getZdjecie }}" style="width: 96px; height=96px" />
-      {% endif %}
-    </td>
-    <td>{{ osoba.getNazwisko }}</td>
-    <td>{{ osoba.getEmail }}</td>
-    <td class="buttony">
-      {% if osoba.getAktywny == 0 %}
-      <a href="{{ path('aktywuj', {'id' : osoba.getIdOsoby})}}"><button title="Aktywuj" style="font-size: 40px"><i class="icon-user-following"></i></button></a>
-      {% else %}
-      <a href="{{ path('osobaUsun', {'id' : osoba.getIdOsoby})}}"><button title="Usuń"><i class="icon-user-unfollow"></i></button></a>
-      {% endif %}
-    </td>
-    <td class="buttony">
-    {% if (osoba.getEmail != app.session.get('email')) %}   {# nie można odebrać sobie uprawnień #}
-      {% if (osoba.getAdmin == 0) %}
-      <a href="{{ path('osobaAdmin', {'tryb': 1, 'id' : osoba.getIdOsoby})}}"><button title="Mianuj administratorem"><i class="icon-check"></i></button></a>
-      {% else %}
-      <a href="{{ path('osobaAdmin', {'tryb': 0, 'id' : osoba.getIdOsoby})}}"><button title="Odbierz uprawnienia administratora"><i class="icon-close"></i></button></a>
-      {% endif %}
-      {% endif %}
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+  <table>
+    <tr>
+      <th style="width: 10%">Avatar</th>
+      <th style="width: 30%">Imię i nazwisko</th>
+      <th style="width: 40%">E-mail</th>
+      <th style="width: 10%; padding-right: 0px">Aktywuj/<br/>Usuń</th>
+      <th style="width: 10%">Admin</th>
+    </tr>
+    {% for osoba in osoby %}
+      <tr>
+        <td>
+          {% if osoba.getZdjecie == null %}
+            {% image 'bundles/studenciak/images/empty_avatar.jpg' %}
+            <img src="{{ asset_url }}" alt="Studenciak" />
+            {% endimage %}
+            {% else %}
+            <img src="{{ osoba.getZdjecie }}" style="width: 96px; height=96px" />
+          {% endif %}
+        </td>
+        <td>{{ osoba.getNazwisko }}</td>
+        <td>{{ osoba.getEmail }}</td>
+        <td class="buttony">
+          {% if osoba.getAktywny == 0 %}
+            <a href="{{ path('aktywuj', {'id' : osoba.getIdOsoby})}}"><button title="Aktywuj" style="font-size: 40px"><i class="icon-user-following"></i></button></a>
+            {% else %}
+            <a href="{{ path('osobaUsun', {'id' : osoba.getIdOsoby})}}"><button title="Usuń"><i class="icon-user-unfollow"></i></button></a>
+          {% endif %}
+        </td>
+        <td class="buttony">
+          {% if (osoba.getEmail != app.session.get('email')) %}   {# nie można odebrać sobie uprawnień #}
+            {% if (osoba.getAdmin == 0) %}
+              <a href="{{ path('osobaAdmin', {'tryb': 1, 'id' : osoba.getIdOsoby})}}"><button title="Mianuj administratorem"><i class="icon-check"></i></button></a>
+              {% else %}
+              <a href="{{ path('osobaAdmin', {'tryb': 0, 'id' : osoba.getIdOsoby})}}"><button title="Odbierz uprawnienia administratora"><i class="icon-close"></i></button></a>
+            {% endif %}
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
 {% endblock %}

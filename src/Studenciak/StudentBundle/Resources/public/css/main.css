@@ -283,17 +283,20 @@ input[type="checkbox"] {
 	color: #38A52D
 }
 
-select {
+select, input[type="number"] {
 	border:2px solid #ddd;
 	background: transparent;
 	font-family: inherit;
-	padding: 8px
+	padding: 8px;
 }
 
-select:hover, select:active {
+input[type="number"]:hover, select:hover, select:active {
 	border: solid 2px #38A52D;
 }
 
+select + select {
+    margin: 5px;
+}
 
 .form-text-input {
 	display: -webkit-inline-box;

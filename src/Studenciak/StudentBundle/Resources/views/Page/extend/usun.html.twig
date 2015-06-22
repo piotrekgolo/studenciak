@@ -1,30 +1,36 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
 
-{% block title %}Osoby{% endblock %}
+{% block title %}
+	Osoby
+{% endblock %}
 
-{% block general %}active{% endblock %}
-{% block osoby %}active{% endblock %}
+{% block general %}
+	active
+{% endblock %}
+{% block osoby %}
+	active
+{% endblock %}
 
 
 {% block view %}
 
-<div class="db-logged" >
-	Czy na pewno chcesz usunąć wybraną osobę?
-	<br /><br />
-	<img src='{{ osoba.getZdjecie }}' />
-	<br />
-	{{ osoba.getNazwisko }}
+	<div class="db-logged" >
+		Czy na pewno chcesz usunąć wybraną osobę?
+		<br /><br />
+		<img src='{{ osoba.getZdjecie }}' />
+		<br />
+		{{ osoba.getNazwisko }}
 
-	<br />
+		<br />
 
-	{{ osoba.getEmail }}
+		{{ osoba.getEmail }}
 
-	<br /><br />
-	<a href="{{ path('osobaUsuwanie', {'id' : osoba.getIdOsoby})}}">
-		<button><span>Usuń</span></button></a>
-	</a>
-</div>
+		<br /><br />
+		<a href="{{ path('osobaUsuwanie', {'id' : osoba.getIdOsoby})}}">
+			<button><span>Usuń</span></button></a>
+		</a>
+	</div>
 
 
 {% endblock %}

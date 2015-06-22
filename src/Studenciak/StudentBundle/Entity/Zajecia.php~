@@ -28,9 +28,9 @@ class Zajecia
 	
 
      /**
-      * @ORM\Column(type="datetime")
+      * @ORM\Column(type="date")
       */
-	protected $data;
+	protected $data_zajec;
 	
      /**
       * @ORM\ManyToOne(targetEntity="Kurs")
@@ -125,5 +125,28 @@ class Zajecia
     public function getIdKursu()
     {
         return $this->id_kursu;
+    }
+
+    /**
+     * Set data_zajec
+     *
+     * @param \DateTime $dataZajec
+     * @return Zajecia
+     */
+    public function setDataZajec($dataZajec)
+    {
+        $this->data_zajec = $dataZajec;
+
+        return $this;
+    }
+
+    /**
+     * Get data_zajec
+     *
+     * @return \DateTime 
+     */
+    public function getDataZajec()
+    {
+        return $this->data_zajec;
     }
 }

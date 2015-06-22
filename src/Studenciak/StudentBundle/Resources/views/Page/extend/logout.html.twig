@@ -1,12 +1,14 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
-{% block title %}Wyloguj{% endblock %}
+{% block title %}
+  Wyloguj
+{% endblock %}
 {% block head %}
  <meta name="google-signin-scope" content="profile email">
-  <meta name="google-signin-client_id" content="935126113867-oe3p7844mr22v5eoo0aj6kctkej35650.apps.googleusercontent.com">
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-  <script>
+ <meta name="google-signin-client_id" content="935126113867-oe3p7844mr22v5eoo0aj6kctkej35650.apps.googleusercontent.com">
+ <script src="https://apis.google.com/js/platform.js" async defer></script>
+ <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+ <script>
   function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
@@ -18,21 +20,25 @@
 {% endblock %}
 
 
-{% block user %}active{% endblock %}
-{% block logout %}active{% endblock %}
+{% block user %}
+  active
+{% endblock %}
+{% block logout %}
+  active
+{% endblock %}
 
 
 {% block view %}
 
 
 
-<div class="db-logged" >
-Czy na pewno chcesz się wylogować?
-<br />
-		<a href="{{ path('logoutSession') }}" onclick="signOut();">
-    <button><span>Wyloguj się</span></button>
+  <div class="db-logged" >
+    Czy na pewno chcesz się wylogować?
+    <br />
+    <a href="{{ path('logoutSession') }}" onclick="signOut();">
+      <button><span>Wyloguj się</span></button>
     </a>
-</div>
+  </div>
 
 
 

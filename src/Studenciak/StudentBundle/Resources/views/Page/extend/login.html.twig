@@ -1,16 +1,18 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
-{% block title %}Logowanie{% endblock %}
+{% block title %}
+	Logowanie
+{% endblock %}
 
 {% block head %}
 
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-<script src="https://apis.google.com/js/api:client.js"></script>
-<script>
-	var googleUser = {};
-	var startApp = function() {
-		gapi.load('auth2', function(){
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+	<script src="https://apis.google.com/js/api:client.js"></script>
+	<script>
+		var googleUser = {};
+		var startApp = function() {
+			gapi.load('auth2', function(){
       // Retrieve the singleton for the GoogleAuth library and set up the client.
       auth2 = gapi.auth2.init({
       	client_id: '935126113867-oe3p7844mr22v5eoo0aj6kctkej35650.apps.googleusercontent.com',
@@ -20,18 +22,18 @@
     });
       attachSignin(document.getElementById('customBtn'));
   });
-	};
+		};
 
-	function attachSignin(element) {
-		console.log(element.id);
-		auth2.attachClickHandler(element, {},
-			function(googleUser) {
+		function attachSignin(element) {
+			console.log(element.id);
+			auth2.attachClickHandler(element, {},
+				function(googleUser) {
 
-				var profile = googleUser.getBasicProfile();
+					var profile = googleUser.getBasicProfile();
 
-				$.post('{{path('Ajax_Update_MyData')}}',               
-					{name: profile.getName(), image: profile.getImageUrl(), email: profile.getEmail()}, 
-					function(response){
+					$.post('{{path('loginAjax')}}',               
+						{name: profile.getName(), image: profile.getImageUrl(), email: profile.getEmail()}, 
+						function(response){
 
 			       $("#zalogowany_dane").html("Witaj, " + profile.getName());	//dane w naglowku
 
@@ -68,30 +70,34 @@
 
 {% endblock %}
 
-{% block user %}active{% endblock %}
-{% block login %}active{% endblock %}
+{% block user %}
+	active
+{% endblock %}
+{% block login %}
+	active
+{% endblock %}
 
 {% block view %}
 
 
-<div class="db-logged" >
-	<div id="customBtn" style="margin-top: 50px">
-		<button><span>Zaloguj się przy użyciu konta Google</span></button>
+	<div class="db-logged" >
+		<div id="customBtn" style="margin-top: 50px">
+			<button><span>Zaloguj się przy użyciu konta Google</span></button>
+		</div>
+		<div class="db-logged-container" style="display: none" id="div_zalogowany">
+			<div class="db-logged-success" id="ikona"></div>
+			<header class="db-logged-gratz" id="zalogowany_dane"> </header>
+			<h3 id="zalogowany_tekst"></h3>
+			<form action="{{path('profil')}}" id="zobacz_profil" style="display: none">
+				<button type="submit">
+					<i class="icon-magnifier"></i> <span>zobacz profil</span>
+				</button>
+			</form>
+		</div>
 	</div>
-	<div class="db-logged-container" style="display: none" id="div_zalogowany">
-		<div class="db-logged-success" id="ikona"></div>
-		<header class="db-logged-gratz" id="zalogowany_dane"> </header>
-		<h3 id="zalogowany_tekst"></h3>
-		<form action="{{path('profil')}}" id="zobacz_profil" style="display: none">
-			<button type="submit">
-				<i class="icon-magnifier"></i> <span>zobacz profil</span>
-			</button>
-		</form>
-	</div>
-</div>
 
 
 
-<script>startApp();</script>
+	<script>startApp();</script>
 
 {% endblock %}

@@ -30,7 +30,7 @@ class Obecnosci
 
      /**
       * @ORM\ManyToOne(targetEntity="Zajecia")
-      * @ORM\JoinColumn(name="id_zajec", referencedColumnName="id_zajecia")
+      * @ORM\JoinColumn(name="id_zajec", referencedColumnName="id_zajec")
       */
     protected $id_zajec;
     
