@@ -994,5 +994,16 @@ h2 {
 
 td
 {
-		vertical-align: middle;
+	vertical-align: middle;
+}
+
+td.buttony button
+{
+	font-size: 40px;
+	margin: 0px;
+}
+
+td.buttony
+{
+	padding: 2px;
 }

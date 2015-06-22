@@ -42,16 +42,16 @@ logoutSession:
     path:     /logoutSession
     defaults: { _controller: StudenciakBundle:Page:logoutSession }
 
-usun:
-    path: /usun/{id}
-    defaults: { _controller: StudenciakBundle:Page:usun }
+osobaUsun:
+    path: /osoby/usun/{id}
+    defaults: { _controller: StudenciakBundle:Page:osobaUsun }
 
-usuwanie:
+osobaUsuwanie:
     path: /usuwanie/{id}
-    defaults: { _controller: StudenciakBundle:Page:usuwanie }
+    defaults: { _controller: StudenciakBundle:Page:osobaUsuwanie }
 
 aktywuj:
-    path: /aktywuj/{id}
+    path: /osoby/aktywuj/{id}
     defaults: { _controller: StudenciakBundle:Page:aktywuj }
 
 przedmiotDodaj:
@@ -61,3 +61,7 @@ przedmiotDodaj:
 przedmiotPokaz:
     path: /przedmiot/pokaz/{id}
     defaults: { _controller: StudenciakBundle:Page:przedmiotPokaz }
+
+osobaAdmin:
+    path: /osoby/admin/{tryb}/{id}
+    defaults: { _controller: StudenciakBundle:Page:osobaAdmin }  

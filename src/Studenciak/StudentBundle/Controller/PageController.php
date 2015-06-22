@@ -38,10 +38,18 @@ class PageController extends Controller
 
 	public function osobyAction()
 	{
-		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
-		$osoby = $repo->findAll();
+		$session = $this->getRequest()->getSession();
+		if ($session->get('admin'))
+		{
+			$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
+			$osoby = $repo->findAll();
 
-		return $this->render('StudenciakBundle:Page:extend/osoby.html.twig', array('osoby' => $osoby));
+			return $this->render('StudenciakBundle:Page:extend/osoby.html.twig', array('osoby' => $osoby));
+		}
+		else
+		{
+			return $this->redirect($this->generateUrl('login'));
+		}
 	}
 
 	public function dziennikAction()
@@ -135,7 +143,7 @@ class PageController extends Controller
 		return $this->redirect($this->generateUrl('przedmiot'));
 	}
 
-	public function usunAction($id)
+	public function osobaUsunAction($id)
 	{
 		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
 		$osoba = $repo->find($id);
@@ -143,12 +151,27 @@ class PageController extends Controller
 		return $this->render('StudenciakBundle:Page:extend/usun.html.twig', array('osoba' => $osoba));
 	}
 
-	public function usuwanieAction($id)
+	public function osobaUsuwanieAction($id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
 		$osoba = $repo->find($id);
 		$em->remove($osoba);
+		$em->flush();
+
+		return $this->redirect($this->generateUrl('osoby'));
+	}
+
+	public function osobaAdminAction($tryb, $id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$osoba = $em->getRepository('StudenciakBundle:Osoba')->find($id);
+
+		if (!$osoba) {
+			return $this->redirect($this->generateUrl('osoby'));
+		}
+
+		$osoba->setAdmin($tryb);
 		$em->flush();
 
 		return $this->redirect($this->generateUrl('osoby'));
