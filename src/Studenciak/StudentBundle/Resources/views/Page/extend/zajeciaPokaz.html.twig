@@ -1,0 +1,90 @@
+{% extends 'StudenciakBundle:Page:base.html.twig' %}
+
+{% block title %}
+    Zajęcia
+{% endblock %}
+
+{% block general %}
+    active
+{% endblock %}
+{% block przedmiot %}
+    active
+{% endblock %}
+
+{% block view %}
+    <div class="db-breadcrumbs">
+        <a class="db-brdcmb-item" href="#">
+            <i class="icon-home"></i>
+        </a>
+        <a class="db-brdcmb-item" href="#">
+            Ogólne
+        </a>
+        <a class="db-brdcmb-item" href="#">
+            Zajęcia
+        </a>
+    </div>
+
+
+    {% if app.session.get('admin') == 1 %} 
+
+        <div class="db-logged" >
+            <a href="{{path('zajeciaDodaj', {'id': zajecia.getIdZajec})}}">
+                <button><i class="icon-plus"></i><span>Dodaj termin zajęć</span></button>
+            </a>
+        </div>
+
+    {% endif %}
+
+    <h2>{{ zajecia.getIdPrzedmiotu.getNazwa }}</h2>
+    Prowadzący: {{ zajecia.getIdPrzedmiotu.getIdOsoby.getNazwisko }}
+    <br />
+    Termin: {{zajecia.getTermin|date("D,  G:i ")}}
+    <br />
+    Sala: {{zajecia.getSala}}
+    <br />
+    Typ zajęć: {% if (zajecia.getTypZajec == 'l') %} laboratorium
+    {% elseif (zajecia.getTypZajec == 'w') %} wykład
+    {% elseif (zajecia.getTypZajec == 'c') %} ćwiczenia
+    {% elseif (zajecia.getTypZajec == 'p') %} projekt
+{% endif %}
+<br />
+
+{% if zapisany is empty %} 
+    <div class="db-logged" >
+            <br/>Aby zobaczyć tematy zapisz się na zajęcia<br/>
+        <a href="{{path('zajeciaZapiszSie', {'id': zajecia.getIdZajec})}}">
+            <button><i class="icon-note"></i><span>Zapisz się na zajęcia</span></button>
+        </a>
+    </div>
+
+    {% else %}
+    {% if zajecia is empty %} 
+        <br />
+        Brak tematów dla wybranych zajęć
+        {% else %}
+
+        <table>
+            <tr>
+                <th width="20%">Data</th>
+                <th width="50%">Temat</th>
+                <th width="30%">Obecności</th>
+            </tr>
+
+
+            {% for l in lekcje %}
+
+                <tr>
+                    <td><a href="#">{{ l.getDataLekcji|date("d-m-Y") }}</a></td>
+                    <td>{{ l.getTemat}}</td>
+                    <td>{{ l.getIdZajec.getSala }}</td>
+                </tr>
+
+
+
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endif %}
+
+{% endblock %}
+

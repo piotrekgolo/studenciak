@@ -35,6 +35,15 @@ class OsobaPrzedmiot
      protected $id_przedmiotu;
 
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set id_osoby
@@ -80,15 +89,5 @@ class OsobaPrzedmiot
     public function getIdPrzedmiotu()
     {
         return $this->id_przedmiotu;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 }

@@ -22,10 +22,10 @@ class Oceny
     
 
      /**
-            * @ORM\ManyToOne(targetEntity="Kurs")
-      * @ORM\JoinColumn(name="id_kursu", referencedColumnName="id_kursu")
+            * @ORM\ManyToOne(targetEntity="Zajecia")
+      * @ORM\JoinColumn(name="id_zajec", referencedColumnName="id_zajec")
       */
-    protected $id_kursu;
+    protected $id_zajec;
     
 
      /**
@@ -47,8 +47,6 @@ class Oceny
     protected $data;
 
 
-
-
     /**
      * Get id_oceny
      *
@@ -60,58 +58,12 @@ class Oceny
     }
 
     /**
-     * Set id_kursu
-     *
-     * @param integer $idKursu
-     * @return Oceny
-     */
-    public function setIdKursu($idKursu)
-    {
-        $this->id_kursu = $idKursu;
-
-        return $this;
-    }
-
-    /**
-     * Get id_kursu
-     *
-     * @return integer 
-     */
-    public function getIdKursu()
-    {
-        return $this->id_kursu;
-    }
-
-    /**
-     * Set id_osoby
-     *
-     * @param integer $idOsoby
-     * @return Oceny
-     */
-    public function setIdOsoby($idOsoby)
-    {
-        $this->id_osoby = $idOsoby;
-
-        return $this;
-    }
-
-    /**
-     * Get id_osoby
-     *
-     * @return integer 
-     */
-    public function getIdOsoby()
-    {
-        return $this->id_osoby;
-    }
-
-    /**
      * Set ocena
      *
-     * @param \double $ocena
+     * @param integer $ocena
      * @return Oceny
      */
-    public function setOcena(\double $ocena)
+    public function setOcena($ocena)
     {
         $this->ocena = $ocena;
 
@@ -121,7 +73,7 @@ class Oceny
     /**
      * Get ocena
      *
-     * @return \double 
+     * @return integer 
      */
     public function getOcena()
     {
@@ -149,5 +101,51 @@ class Oceny
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * Set id_zajec
+     *
+     * @param \Studenciak\StudentBundle\Entity\Zajecia $idZajec
+     * @return Oceny
+     */
+    public function setIdZajec(\Studenciak\StudentBundle\Entity\Zajecia $idZajec = null)
+    {
+        $this->id_zajec = $idZajec;
+
+        return $this;
+    }
+
+    /**
+     * Get id_zajec
+     *
+     * @return \Studenciak\StudentBundle\Entity\Zajecia 
+     */
+    public function getIdZajec()
+    {
+        return $this->id_zajec;
+    }
+
+    /**
+     * Set id_osoby
+     *
+     * @param \Studenciak\StudentBundle\Entity\Osoba $idOsoby
+     * @return Oceny
+     */
+    public function setIdOsoby(\Studenciak\StudentBundle\Entity\Osoba $idOsoby = null)
+    {
+        $this->id_osoby = $idOsoby;
+
+        return $this;
+    }
+
+    /**
+     * Get id_osoby
+     *
+     * @return \Studenciak\StudentBundle\Entity\Osoba 
+     */
+    public function getIdOsoby()
+    {
+        return $this->id_osoby;
     }
 }

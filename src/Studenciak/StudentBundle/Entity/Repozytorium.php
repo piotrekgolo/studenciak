@@ -47,7 +47,7 @@ class Repozytorium
     protected $typ;
 	
 
-    
+
 
     /**
      * Get id_repozytorium
@@ -57,52 +57,6 @@ class Repozytorium
     public function getIdRepozytorium()
     {
         return $this->id_repozytorium;
-    }
-
-    /**
-     * Set id_przedmiotu
-     *
-     * @param integer $idPrzedmiotu
-     * @return Repozytorium
-     */
-    public function setIdPrzedmiotu($idPrzedmiotu)
-    {
-        $this->id_przedmiotu = $idPrzedmiotu;
-
-        return $this;
-    }
-
-    /**
-     * Get id_przedmiotu
-     *
-     * @return integer 
-     */
-    public function getIdPrzedmiotu()
-    {
-        return $this->id_przedmiotu;
-    }
-
-    /**
-     * Set id_osoby
-     *
-     * @param integer $idOsoby
-     * @return Repozytorium
-     */
-    public function setIdOsoby($idOsoby)
-    {
-        $this->id_osoby = $idOsoby;
-
-        return $this;
-    }
-
-    /**
-     * Get id_osoby
-     *
-     * @return integer 
-     */
-    public function getIdOsoby()
-    {
-        return $this->id_osoby;
     }
 
     /**
@@ -149,5 +103,51 @@ class Repozytorium
     public function getTyp()
     {
         return $this->typ;
+    }
+
+    /**
+     * Set id_przedmiotu
+     *
+     * @param \Studenciak\StudentBundle\Entity\Przedmiot $idPrzedmiotu
+     * @return Repozytorium
+     */
+    public function setIdPrzedmiotu(\Studenciak\StudentBundle\Entity\Przedmiot $idPrzedmiotu = null)
+    {
+        $this->id_przedmiotu = $idPrzedmiotu;
+
+        return $this;
+    }
+
+    /**
+     * Get id_przedmiotu
+     *
+     * @return \Studenciak\StudentBundle\Entity\Przedmiot 
+     */
+    public function getIdPrzedmiotu()
+    {
+        return $this->id_przedmiotu;
+    }
+
+    /**
+     * Set id_osoby
+     *
+     * @param \Studenciak\StudentBundle\Entity\Osoba $idOsoby
+     * @return Repozytorium
+     */
+    public function setIdOsoby(\Studenciak\StudentBundle\Entity\Osoba $idOsoby = null)
+    {
+        $this->id_osoby = $idOsoby;
+
+        return $this;
+    }
+
+    /**
+     * Get id_osoby
+     *
+     * @return \Studenciak\StudentBundle\Entity\Osoba 
+     */
+    public function getIdOsoby()
+    {
+        return $this->id_osoby;
     }
 }

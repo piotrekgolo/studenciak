@@ -1,6 +1,6 @@
 <?php
 
- // src/Studenciak/Entity/Osoba.php
+ // src/Studenciak/Entity/OsobaZajecia.php
 
 namespace Studenciak\StudentBundle\Entity;
 
@@ -8,10 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
 * @ORM\Entity
-* @ORM\Table(name="osoba_kurs")
+* @ORM\Table(name="osoba_zajecia")
 */
 
-class OsobaKurs
+class OsobaZajecia
 {
 
      /**
@@ -30,17 +30,28 @@ class OsobaKurs
 
 
      /**
-      * @ORM\ManyToOne(targetEntity="Kurs")
-      * @ORM\JoinColumn(name="id_kursu", referencedColumnName="id_kursu")
+      * @ORM\ManyToOne(targetEntity="Zajecia")
+      * @ORM\JoinColumn(name="id_zajec", referencedColumnName="id_zajec")
       */
-     protected $id_kursu;
+     protected $id_zajec;
 
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set id_osoby
      *
      * @param \Studenciak\StudentBundle\Entity\Osoba $idOsoby
-     * @return OsobaKurs
+     * @return osobaZajecia
      */
     public function setIdOsoby(\Studenciak\StudentBundle\Entity\Osoba $idOsoby = null)
     {
@@ -60,35 +71,25 @@ class OsobaKurs
     }
 
     /**
-     * Set id_kursu
+     * Set id_zajec
      *
-     * @param \Studenciak\StudentBundle\Entity\Kurs $idKursu
-     * @return OsobaKurs
+     * @param \Studenciak\StudentBundle\Entity\Zajecia $idZajec
+     * @return osobaZajecia
      */
-    public function setIdKursu(\Studenciak\StudentBundle\Entity\Kurs $idKursu = null)
+    public function setIdZajec(\Studenciak\StudentBundle\Entity\Zajecia $idZajec = null)
     {
-        $this->id_kursu = $idKursu;
+        $this->id_zajec = $idZajec;
 
         return $this;
     }
 
     /**
-     * Get id_kursu
+     * Get id_zajec
      *
-     * @return \Studenciak\StudentBundle\Entity\Kurs 
+     * @return \Studenciak\StudentBundle\Entity\Zajecia 
      */
-    public function getIdKursu()
+    public function getIdZajec()
     {
-        return $this->id_kursu;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
+        return $this->id_zajec;
     }
 }

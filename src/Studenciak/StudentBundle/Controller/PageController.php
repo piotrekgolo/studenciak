@@ -10,34 +10,73 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Studenciak\StudentBundle\Entity\Osoba;
 use Studenciak\StudentBundle\Entity\Przedmiot;
-use Studenciak\StudentBundle\Entity\Kurs;
+use Studenciak\StudentBundle\Entity\Lekcje;
 use Studenciak\StudentBundle\Entity\Zajecia;
+use Studenciak\StudentBundle\Entity\OsobaPrzedmiot;
+use Studenciak\StudentBundle\Entity\OsobaZajecia;
 
 
 class PageController extends Controller
 {
 
+	public function zobacz($co)
+	{
+		echo '<pre>';
+		\Doctrine\Common\Util\Debug::dump($co);
+		echo '</pre>';
+	}
+
+
 	public function indexAction()
 	{
-		return $this->render('StudenciakBundle:Page:base.html.twig');
+		$session = $this->getRequest()->getSession();
+		if (!$session->get('email'))
+			return $this->redirect($this->generateUrl('login'));
+		else
+			return $this->redirect($this->generateUrl('przedmiot'));
 	}
 
 	public function przedmiotAction()
 	{
+		$session = $this->getRequest()->getSession();
+		if (!$session->get('email'))
+			return $this->redirect($this->generateUrl('login'));
 
 		$em = $this->getDoctrine()->getRepository('StudenciakBundle:Przedmiot');
-		$przedmioty = $em->findAll();
+		$wszystkie_przedmioty = $em->findBy(array(), array('semestr'=>'ASC', 'nazwa'=>'ASC'));
 
-		return $this->render('StudenciakBundle:Page:extend/przedmiot.html.twig', array('przedmioty' => $przedmioty));
+		$em = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaPrzedmiot');
+		$moje_przedmioty = $em->findBy(array('id_osoby'=>$session->get('id')));
+
+		$moje_przedmioty_ob = array();
+		foreach ($moje_przedmioty as $przed) {					//wyciągamy przedmioty z tablicy obiektow OsobaPrzedmiot
+			$moje_przedmioty_ob[] = $przed->getIdPrzedmiotu();
+		}
+
+		$przedmioty = array();
+		foreach ($wszystkie_przedmioty as $przed) {				//usuwamy przedmioty na ktorych jestesmy
+			if (!(in_array($przed, $moje_przedmioty_ob)))
+				$przedmioty[] = $przed;
+		}
+
+		return $this->render('StudenciakBundle:Page:extend/przedmiot.html.twig', array('moje_przedmioty' => $moje_przedmioty_ob, 'przedmioty' => $przedmioty));
 	}
 
 	public function repoAction()
 	{
+		$session = $this->getRequest()->getSession();
+		if (!$session->get('email'))
+			return $this->redirect($this->generateUrl('login'));
+
 		return $this->render('StudenciakBundle:Page:extend/repo.html.twig');
 	}
 
 	public function grupyAction()
 	{
+		$session = $this->getRequest()->getSession();
+		if (!$session->get('email'))
+			return $this->redirect($this->generateUrl('login'));
+
 		return $this->render('StudenciakBundle:Page:extend/grupy.html.twig');
 	}
 
@@ -59,6 +98,10 @@ class PageController extends Controller
 
 	public function dziennikAction()
 	{
+		$session = $this->getRequest()->getSession();
+		if (!$session->get('email'))
+			return $this->redirect($this->generateUrl('login'));
+
 		return $this->render('StudenciakBundle:Page:extend/dziennik.html.twig');
 	}
 
@@ -84,7 +127,7 @@ class PageController extends Controller
 	{
 		$session = $this->getRequest()->getSession();
 		if ($session->get('email'))
-			return $this->redirect($this->generateUrl('profile'));
+			return $this->redirect($this->generateUrl('profil'));
 
 		return $this->render('StudenciakBundle:Page:extend/login.html.twig');
 	}
@@ -139,6 +182,7 @@ class PageController extends Controller
 				$session->set('image', $image);
 				$session->set('email', $email);
 				$session->set('admin', $akceptowany->getAdmin());
+				$session->set('id', $akceptowany->getIdOsoby());
 
 			}
 		}
@@ -245,19 +289,74 @@ class PageController extends Controller
 	public function przedmiotPokazAction($id)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$przedmiot = $em->getRepository('StudenciakBundle:Przedmiot')->find($id);
-		$kursy = $em->getRepository('StudenciakBundle:Kurs')->findBy(array('id_przedmiotu' => $id));
+		$session = $this->getRequest()->getSession();
 
-		return $this->render('StudenciakBundle:Page:extend/przedmiotPokaz.html.twig', array('przedmiot'=>$przedmiot, 'kursy' => $kursy));
+		$przedmiot = $em->getRepository('StudenciakBundle:Przedmiot')->find($id);
+		
+		$czy_zapisany = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaPrzedmiot')
+		->findBy(array('id_osoby'=>$session->get('id'), 'id_przedmiotu'=>$id));
+
+		if (empty($czy_zapisany)) {
+			return $this->redirect($this->generateUrl('przedmiotZapiszSie', array('id' => $id)));
+		}
+
+		$zajecia = $em->getRepository('StudenciakBundle:Zajecia')->findBy(array('id_przedmiotu' => $id));
+
+		return $this->render('StudenciakBundle:Page:extend/przedmiotPokaz.html.twig', array('przedmiot'=>$przedmiot, 'zajecia' => $zajecia));
 	}
 
 
-
-	public function przedmiotKursDodajAction(Request $request, $id_przedmiotu)
+	public function przedmiotZapiszSieAction(Request $request, $id)
 	{
 		$em = $this->getDoctrine()->getManager();
-
 		$session = $this->getRequest()->getSession();
+
+		$przedmiot = $em->getRepository('StudenciakBundle:Przedmiot')->find($id);
+		$osoba = $em->getRepository('StudenciakBundle:Osoba')->findOneByEmail($session->get('email'));	//pobieramy siebie z bazy
+
+		$bledne_haslo = "";
+
+		$przedmiot_form = new Przedmiot();
+		$form = $this->createFormBuilder($przedmiot_form)
+		->add('haslo', 'text', array('label'  => 'Hasło do przedmiotu', 'max_length' => 255))
+		->getForm();
+
+		$form->handleRequest($request);
+		if ($form->isValid()) {
+
+			$haslo = $form->get('haslo')->getData();
+			$this->zobacz($haslo);
+			$this->zobacz($przedmiot->getHaslo());
+			if ($haslo == $przedmiot->getHaslo())
+			{
+				$osoba_przedmiot = new OsobaPrzedmiot();
+				$osoba_przedmiot->setIdOsoby($osoba);
+				$osoba_przedmiot->setIdPrzedmiotu($przedmiot);
+
+				$em->persist($osoba_przedmiot);
+				$em->flush();
+
+				return $this->redirect($this->generateUrl('przedmiotPokaz', array('id' => $id)));
+			}
+			else
+			{
+				$bledne_haslo = "Podane hasło jest nieprawidłowe";
+			}
+
+		}
+
+		return $this->render('StudenciakBundle:Page:extend/przedmiotZapiszSie.html.twig', 
+			array('form' => $form->createView(), 'przedmiot'=>$przedmiot, 'bledne_haslo' => $bledne_haslo));
+
+
+	}
+
+
+	public function przedmiotDodajZajeciaAction(Request $request, $id_przedmiotu)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$session = $this->getRequest()->getSession();
+
 		if ($session->get('admin'))
 		{
 			$przedmiot = $em->getRepository('StudenciakBundle:Przedmiot')->find($id_przedmiotu);
@@ -265,10 +364,10 @@ class PageController extends Controller
 
 			$wybor_nauczycieli = new ObjectChoiceList($nauczyciele, 'nazwisko', array(), null, 'id_osoby');	//lista wyboru nauczycieli
 
-			$kurs = new Kurs();
-			$kurs->setIdPrzedmiotu($przedmiot);			//id przedmiotu do ktorego dodajemy
+			$zajecia = new Zajecia();
+			$zajecia->setIdPrzedmiotu($przedmiot);			//id przedmiotu do ktorego dodajemy
 
-			$form = $this->createFormBuilder($kurs)
+			$form = $this->createFormBuilder($zajecia)
 			->add('id_osoby', 'choice', array('label'  => 'Prowadzący', 
 				'choice_list' => $wybor_nauczycieli))
 			->add('typ_zajec', 'choice', array('label'  => 'Typ zajęć', 
@@ -289,38 +388,44 @@ class PageController extends Controller
 				return $this->redirect($this->generateUrl('przedmiotPokaz', array('id' => $id_przedmiotu)));
 			}
 
-			return $this->render('StudenciakBundle:Page:extend/przedmiotKursDodaj.html.twig', array('form' => $form->createView()));
+			return $this->render('StudenciakBundle:Page:extend/przedmiotDodajZajecia.html.twig', array('form' => $form->createView()));
 		}
 
 		else
 			return $this->redirect($this->generateUrl('przedmiot'));
 	}
 
-	public function kursPokazAction($id)
+	public function zajeciaPokazAction($id)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$kurs = $em->getRepository('StudenciakBundle:Kurs')->find($id);
-		$zajecia = $em->getRepository('StudenciakBundle:Zajecia')->findBy(array('id_kursu' => $id), array('data_zajec' => 'ASC'));		
+		$session = $this->getRequest()->getSession();
+		
+		$zajecia = $em->getRepository('StudenciakBundle:Zajecia')->find($id);
+		$lekcje = $em->getRepository('StudenciakBundle:Lekcje')->findBy(array('id_zajec' => $id), array('data_lekcji' => 'ASC'));		
 
-		return $this->render('StudenciakBundle:Page:extend/kursPokaz.html.twig', array('kurs' => $kurs, 'zajecia' => $zajecia));
+		$czy_zapisany = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaZajecia')
+		->findBy(array('id_osoby'=>$session->get('id'), 'id_zajec'=>$id));
+
+		return $this->render('StudenciakBundle:Page:extend/zajeciaPokaz.html.twig', 
+			array('zajecia' => $zajecia, 'lekcje' => $lekcje, 'zapisany' => $czy_zapisany));
 	}
 
-	public function kursDodajZajeciaAction(Request $request, $id)
+	public function zajeciaDodajAction(Request $request, $id)
 	{
 		$em = $this->getDoctrine()->getManager();
 
 		$session = $this->getRequest()->getSession();
 		if ($session->get('admin'))
 		{
-			$kurs = $em->getRepository('StudenciakBundle:Kurs')->find($id);
-			$zajecia = new Zajecia();
-			$zajecia->setIdKursu($kurs);
+			$zajecia = $em->getRepository('StudenciakBundle:Zajecia')->find($id);
+			$lekcje = new Lekcje();
+			$lekcje->setIdZajec($zajecia);
 
-			$data_kursu = new \DateTime($kurs->getTermin()->format('Y-m-d H:i:s'));
+			$data_zajec = new \DateTime($zajecia->getTermin()->format('Y-m-d H:i:s'));
 
-			$form = $this->createFormBuilder($zajecia)
+			$form = $this->createFormBuilder($lekcje)
 			->add('temat', 'text', array('label'  => 'Temat zajęć', 'max_length' => 255))
-			->add('data_zajec', 'date', array('label'  => 'Data zajęć',  'data' => $data_kursu))
+			->add('data_lekcji', 'date', array('label'  => 'Data zajęć',  'data' => $data_zajec))
 			->add('kolejne', 'integer', array('label'  => 'Powtórzenie zajęć w następnych tygodniach', 'data' => 0,
 				'mapped' => false, 'attr' => array('min' => '0', 'max' => '15')))
 			->getForm();
@@ -330,7 +435,7 @@ class PageController extends Controller
 			{
 
 				$z = $form->get('kolejne')->getData();
-				$data_kursu = $form->get('data_zajec')->getData();
+				$data_zajec = $form->get('data_lekcji')->getData();
 
 				$task = $form->getData();
 				$em->persist($task);
@@ -339,34 +444,49 @@ class PageController extends Controller
 				if ($z)
 				{
 					for ($i=1; $i <= $z; $i++) { 
-						$zajeciax = new Zajecia();
-						$zajeciax->setIdKursu($kurs);
+						$lekcje_tmp = new Lekcje();
+						$lekcje_tmp->setIdZajec($zajecia);
 
-						$zajeciax->setTemat('Brak tematu');
+						$lekcje_tmp->setTemat('Brak tematu');
 						
-						$data_nowa = $data_kursu;
+						$data_nowa = $data_zajec;
 						$data_nowa->add(new \DateInterval('P7D'));
 
-						$zajeciax->setDataZajec($data_nowa);
-						$em->persist($zajeciax);
+						$lekcje_tmp->setDataLekcji($data_nowa);
+						$em->persist($lekcje_tmp);
 						$em->flush();
 					}
 				}
 
-				return $this->redirect($this->generateUrl('test', array('id' => $z)));
+				return $this->redirect($this->generateUrl('zajeciaPokaz', array('id' => $id)));
 			}
 
-			return $this->render('StudenciakBundle:Page:extend/kursDodajZajecia.html.twig', array('form' => $form->createView()));
+			return $this->render('StudenciakBundle:Page:extend/zajeciaDodaj.html.twig', array('form' => $form->createView()));
 		}
 
 		else
 			return $this->redirect($this->generateUrl('przedmiot'));
 	}
 
-	public function testAction($id)
+
+	public function zajeciaZapiszSieAction($id)
 	{
-		return $this->render('StudenciakBundle:Page:extend/test.html.twig', array('id' => $id));
+		$em = $this->getDoctrine()->getManager();
+		$session = $this->getRequest()->getSession();
+
+		$zajecia = $em->getRepository('StudenciakBundle:Zajecia')->find($id);
+		$osoba = $em->getRepository('StudenciakBundle:Osoba')->findOneByEmail($session->get('email'));	//pobieramy siebie z bazy
+
+
+		$osoba_zajecia = new OsobaZajecia();
+		$osoba_zajecia->setIdOsoby($osoba);
+		$osoba_zajecia->setIdZajec($zajecia);
+
+		$em->persist($osoba_zajecia);
+		$em->flush();
+
+		return $this->redirect($this->generateUrl('zajeciaPokaz', array('id' => $id)));
+
+
 	}
-
-
 }

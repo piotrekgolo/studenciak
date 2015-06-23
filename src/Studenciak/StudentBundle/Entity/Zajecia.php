@@ -22,77 +22,37 @@ class Zajecia
 	
 
      /**
-      * @ORM\Column(type="string", length=255)
+      * @ORM\ManyToOne(targetEntity="Osoba")
+      * @ORM\JoinColumn(name="id_osoby", referencedColumnName="id_osoby")
       */
-	protected $temat;
+	protected $id_osoby;
+	
 	
 
      /**
-      * @ORM\Column(type="date")
+      * @ORM\Column(type="string", length=20)
       */
-	protected $data_zajec;
-	
+	protected $typ_zajec;
+    
+
      /**
-      * @ORM\ManyToOne(targetEntity="Kurs")
-      * @ORM\JoinColumn(name="id_kursu", referencedColumnName="id_kursu")
+      * @ORM\Column(type="string", length=45)
       */
-    protected $id_kursu;
+    protected $sala;
 
-    /**
-     * Get id_zajecia
-     *
-     * @return integer 
-     */
-    public function getIdZajecia()
-    {
-        return $this->id_zajecia;
-    }
 
-    /**
-     * Set temat
-     *
-     * @param string $temat
-     * @return Zajecia
-     */
-    public function setTemat($temat)
-    {
-        $this->temat = $temat;
+     /**
+      * @ORM\Column(type="datetime")
+      */
+    protected $termin;
 
-        return $this;
-    }
 
-    /**
-     * Get temat
-     *
-     * @return string 
-     */
-    public function getTemat()
-    {
-        return $this->temat;
-    }
+     /**
+      * @ORM\ManyToOne(targetEntity="Przedmiot")
+      * @ORM\JoinColumn(name="id_przedmiotu", referencedColumnName="id_przedmiotu")
+      */
+    protected $id_przedmiotu;
 
-    /**
-     * Set data
-     *
-     * @param \DateTime $data
-     * @return Zajecia
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * Get data
-     *
-     * @return \DateTime 
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
 
     /**
      * Get id_zajec
@@ -105,48 +65,117 @@ class Zajecia
     }
 
     /**
-     * Set id_kursu
+     * Set typ_zajec
      *
-     * @param \Studenciak\StudentBundle\Entity\Kurs $idKursu
+     * @param string $typZajec
      * @return Zajecia
      */
-    public function setIdKursu(\Studenciak\StudentBundle\Entity\Kurs $idKursu = null)
+    public function setTypZajec($typZajec)
     {
-        $this->id_kursu = $idKursu;
+        $this->typ_zajec = $typZajec;
 
         return $this;
     }
 
     /**
-     * Get id_kursu
+     * Get typ_zajec
      *
-     * @return \Studenciak\StudentBundle\Entity\Kurs 
+     * @return string 
      */
-    public function getIdKursu()
+    public function getTypZajec()
     {
-        return $this->id_kursu;
+        return $this->typ_zajec;
     }
 
     /**
-     * Set data_zajec
+     * Set sala
      *
-     * @param \DateTime $dataZajec
+     * @param string $sala
      * @return Zajecia
      */
-    public function setDataZajec($dataZajec)
+    public function setSala($sala)
     {
-        $this->data_zajec = $dataZajec;
+        $this->sala = $sala;
 
         return $this;
     }
 
     /**
-     * Get data_zajec
+     * Get sala
+     *
+     * @return string 
+     */
+    public function getSala()
+    {
+        return $this->sala;
+    }
+
+    /**
+     * Set termin
+     *
+     * @param \DateTime $termin
+     * @return Zajecia
+     */
+    public function setTermin($termin)
+    {
+        $this->termin = $termin;
+
+        return $this;
+    }
+
+    /**
+     * Get termin
      *
      * @return \DateTime 
      */
-    public function getDataZajec()
+    public function getTermin()
     {
-        return $this->data_zajec;
+        return $this->termin;
+    }
+
+    /**
+     * Set id_osoby
+     *
+     * @param \Studenciak\StudentBundle\Entity\Osoba $idOsoby
+     * @return Zajecia
+     */
+    public function setIdOsoby(\Studenciak\StudentBundle\Entity\Osoba $idOsoby = null)
+    {
+        $this->id_osoby = $idOsoby;
+
+        return $this;
+    }
+
+    /**
+     * Get id_osoby
+     *
+     * @return \Studenciak\StudentBundle\Entity\Osoba 
+     */
+    public function getIdOsoby()
+    {
+        return $this->id_osoby;
+    }
+
+    /**
+     * Set id_przedmiotu
+     *
+     * @param \Studenciak\StudentBundle\Entity\Przedmiot $idPrzedmiotu
+     * @return Zajecia
+     */
+    public function setIdPrzedmiotu(\Studenciak\StudentBundle\Entity\Przedmiot $idPrzedmiotu = null)
+    {
+        $this->id_przedmiotu = $idPrzedmiotu;
+
+        return $this;
+    }
+
+    /**
+     * Get id_przedmiotu
+     *
+     * @return \Studenciak\StudentBundle\Entity\Przedmiot 
+     */
+    public function getIdPrzedmiotu()
+    {
+        return $this->id_przedmiotu;
     }
 }

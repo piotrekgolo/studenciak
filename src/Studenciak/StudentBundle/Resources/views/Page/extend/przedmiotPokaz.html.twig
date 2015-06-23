@@ -1,7 +1,7 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
 {% block title %}
-    Kursy
+    Zajęcia
 {% endblock %}
 
 {% block general %}
@@ -20,7 +20,7 @@
             Ogólne
         </a>
         <a class="db-brdcmb-item" href="#">
-            Kursy
+            Zajęcia
         </a>
     </div>
 
@@ -28,8 +28,8 @@
     {% if app.session.get('admin') == 1 %} 
 
         <div class="db-logged" >
-            <a href="{{path('przedmiotKursDodaj', {'id_przedmiotu': przedmiot.getIdPrzedmiotu})}}">
-                <button><i class="icon-plus"></i><span>Dodaj kurs</span></button>
+            <a href="{{path('przedmiotDodajZajecia', {'id_przedmiotu': przedmiot.getIdPrzedmiotu})}}">
+                <button><i class="icon-plus"></i><span>Dodaj zajęcia</span></button>
             </a>
         </div>
     {% endif %}
@@ -39,9 +39,9 @@
     <br />
 
 
-    {% if kursy is empty %} 
+    {% if zajecia is empty %} 
         <br />
-        Brak kursów dla wybranego przedmiotu
+        Brak zajęć dla wybranego przedmiotu
         {% else %}
 
 
@@ -54,17 +54,17 @@
             </tr>
 
 
-            {% for kurs in kursy %}
+            {% for z in zajecia %}
 
                 <tr>
-                    <td><a href="{{path('kursPokaz', {'id': kurs.getIdKursu})}}">{{ kurs.getTermin|date("D,  G:i ") }}</a></td>
-                    <td>{{ kurs.getIdOsoby.getNazwisko}}</td>
-                    <td>{{ kurs.getSala }}</td>
+                    <td><a href="{{path('zajeciaPokaz', {'id': z.getIdZajec})}}">{{ z.getTermin|date("D,  G:i ") }}</a></td>
+                    <td>{{ z.getIdOsoby.getNazwisko}}</td>
+                    <td>{{ z.getSala }}</td>
                     <td>
-                        {% if (kurs.getTypZajec == 'l') %} laboratorium
-                            {% elseif (kurs.getTypZajec == 'w') %} wykład
-                            {% elseif (kurs.getTypZajec == 'c') %} ćwiczenia
-                            {% elseif (kurs.getTypZajec == 'p') %} projekt
+                        {% if (z.getTypZajec == 'l') %} laboratorium
+                            {% elseif (z.getTypZajec == 'w') %} wykład
+                            {% elseif (z.getTypZajec == 'c') %} ćwiczenia
+                            {% elseif (z.getTypZajec == 'p') %} projekt
                         {% endif %}
                     </td>
                 </tr>

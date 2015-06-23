@@ -50,6 +50,7 @@ class Przedmiot
       */
     protected $haslo;
 
+
     /**
      * Get id_przedmiotu
      *
@@ -61,26 +62,26 @@ class Przedmiot
     }
 
     /**
-     * Set id_osoby
+     * Set nazwa
      *
-     * @param integer $idOsoby
+     * @param string $nazwa
      * @return Przedmiot
      */
-    public function setIdOsoby($idOsoby)
+    public function setNazwa($nazwa)
     {
-        $this->id_osoby = $idOsoby;
+        $this->nazwa = $nazwa;
 
         return $this;
     }
 
     /**
-     * Get id_osoby
+     * Get nazwa
      *
-     * @return integer 
+     * @return string 
      */
-    public function getIdOsoby()
+    public function getNazwa()
     {
-        return $this->id_osoby;
+        return $this->nazwa;
     }
 
     /**
@@ -130,55 +131,25 @@ class Przedmiot
     }
 
     /**
-     * Set nazwa
+     * Set id_osoby
      *
-     * @param string $nazwa
+     * @param \Studenciak\StudentBundle\Entity\Osoba $idOsoby
      * @return Przedmiot
      */
-    public function setNazwa($nazwa)
+    public function setIdOsoby(\Studenciak\StudentBundle\Entity\Osoba $idOsoby = null)
     {
-        $this->nazwa = $nazwa;
+        $this->id_osoby = $idOsoby;
 
         return $this;
     }
 
     /**
-     * Get nazwa
+     * Get id_osoby
      *
-     * @return string 
+     * @return \Studenciak\StudentBundle\Entity\Osoba 
      */
-    public function getNazwa()
+    public function getIdOsoby()
     {
-        return $this->nazwa;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->id_osoby = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add id_osoby
-     *
-     * @param \Studenciak\StudentBundle\Entity\Osoba $idOsoby
-     * @return Przedmiot
-     */
-    public function addIdOsoby(\Studenciak\StudentBundle\Entity\Osoba $idOsoby)
-    {
-        $this->id_osoby[] = $idOsoby;
-
-        return $this;
-    }
-
-    /**
-     * Remove id_osoby
-     *
-     * @param \Studenciak\StudentBundle\Entity\Osoba $idOsoby
-     */
-    public function removeIdOsoby(\Studenciak\StudentBundle\Entity\Osoba $idOsoby)
-    {
-        $this->id_osoby->removeElement($idOsoby);
+        return $this->id_osoby;
     }
 }

@@ -20,7 +20,7 @@
             Ogólne
         </a>
         <a class="db-brdcmb-item" href="#">
-            Kursy
+            Zajęcia
         </a>
     </div>
 
@@ -37,28 +37,62 @@
 
 
 
-    <h2>Moje przedmioty</h2>
-    <table>
-        <tr>
-            <th data-sorted="desc" width="50%">Nazwa</th>
-            <th width="40%">Prowadzący</th>
-            <th width="5%">Semestr</th>
-            <th width="5%"></th>
-        </tr>
 
-
-        {% for przedmiot in przedmioty %}
-
+    {% if moje_przedmioty %} 
+        <h2>Moje przedmioty</h2>
+        <table>
             <tr>
-                <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
-                <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
-                <td>{{ przedmiot.getSemestr }}</td>
-                <td><i class="icon-settings"></i></td>
+                <th width="50%">Nazwa</th>
+                <th width="40%">Prowadzący</th>
+                <th width="5%">Semestr</th>
+                <th width="5%"></th>
             </tr>
 
 
+            {% for przedmiot in moje_przedmioty %}
 
-        {% endfor %}
-    </table>
+                <tr>
+                    <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
+                    <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
+                    <td>{{ przedmiot.getSemestr }}</td>
+                    <td><i class="icon-settings"></i></td>
+                </tr>
+
+
+
+            {% endfor %}
+        </table>
+        <br />
+    {% endif %}
+    {% if przedmioty %} 
+        {% if moje_przedmioty %} 
+            <h2>Pozostałe przedmioty</h2>
+            {% else %}
+            <h2>Przedmioty</h2>
+        {% endif %}
+        
+        <table>
+            <tr>
+                <th width="50%">Nazwa</th>
+                <th width="40%">Prowadzący</th>
+                <th width="5%">Semestr</th>
+                <th width="5%"></th>
+            </tr>
+
+
+            {% for przedmiot in przedmioty %}
+
+                <tr>
+                    <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
+                    <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
+                    <td>{{ przedmiot.getSemestr }}</td>
+                    <td><i class="icon-settings"></i></td>
+                </tr>
+
+
+
+            {% endfor %}
+        </table>
+    {% endif %}
 {% endblock %}
 

@@ -347,7 +347,7 @@ table th {
 	border-bottom: solid 2px #222
 }
 
-table th[data-sorted] {
+table th {
 	color: #38A52D;
 	border-color: #38A52D
 }

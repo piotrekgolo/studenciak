@@ -18,7 +18,7 @@ class Osoba
       * @ORM\Column(type="integer")
       * @ORM\GeneratedValue(strategy="AUTO")
       */
-	protected $id_osoby;
+	protected $idOsoby;
 	
 
      /**
@@ -49,27 +49,15 @@ class Osoba
       */
     protected $aktywny;
 
-    /**
-     * Set id_osoby
-     *
-     * @param integer $idOsoby
-     * @return Osoba
-     */
-    public function setIdOsoby($idOsoby)
-    {
-        $this->id_osoby = $idOsoby;
-
-        return $this;
-    }
 
     /**
-     * Get id_osoby
+     * Get idOsoby
      *
      * @return integer 
      */
     public function getIdOsoby()
     {
-        return $this->id_osoby;
+        return $this->idOsoby;
     }
 
     /**

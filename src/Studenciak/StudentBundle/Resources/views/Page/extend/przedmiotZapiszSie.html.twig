@@ -1,0 +1,68 @@
+{% extends 'StudenciakBundle:Page:base.html.twig' %}
+
+{% block title %}
+    Zapisywanie się
+{% endblock %}
+
+{% block general %}
+    active
+{% endblock %}
+{% block przedmiot %}
+    active
+{% endblock %}
+
+{% block view %}
+    <div class="db-breadcrumbs">
+        <a class="db-brdcmb-item" href="#">
+            <i class="icon-home"></i>
+        </a>
+        <a class="db-brdcmb-item" href="#">
+            Ogólne
+        </a>
+        <a class="db-brdcmb-item" href="#">
+            Zajęcia
+        </a>
+    </div>
+
+
+    <h2>{{ przedmiot.getNazwa }}</h2>
+    <br />
+
+
+    <div class="db-logged" >
+
+
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <table>
+            <tr>
+                <td>
+                    {% if bledne_haslo != "" %} 
+                        <span style="color: red">Podane hasło jest nieprawidłowe. Wprowadź poprawne hasło.</span>
+                        {% else %}
+                        Aby zapisać się na wybrany przedmiot musisz podać hasło dostępu
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.haslo) }}</td>
+            </tr>
+            <tr>
+                <td><span class="form-text-input">{{ form_widget(form.haslo) }}{{ form_errors(form.haslo) }}</span></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Zapisz się na przedmiot" /></td>
+            </tr>
+        </table>
+
+
+
+        {{ form_end(form) }}
+
+    </div>
+
+    
+{% endblock %}
+

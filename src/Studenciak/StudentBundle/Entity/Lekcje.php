@@ -1,6 +1,6 @@
 <?php
 
- // src/Studenciak/Entity/Obecnosci.php
+ // src/Studenciak/Entity/Lekcje.php
 
 namespace Studenciak\StudentBundle\Entity;
 
@@ -8,95 +8,97 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
 * @ORM\Entity
-* @ORM\Table(name="obecnosci")
+* @ORM\Table(name="lekcje")
 */
 
-class Obecnosci
+class Lekcje
 {
-    /**
+	/**
       * @ORM\Id
       * @ORM\Column(type="integer")
       * @ORM\GeneratedValue(strategy="AUTO")
       */
-    protected $id_obecnosci;
-    
+	protected $id_lekcji;
+	
 
      /**
-      * @ORM\ManyToOne(targetEntity="Osoba")
-      * @ORM\JoinColumn(name="id_osoby", referencedColumnName="id_osoby")
+      * @ORM\Column(type="string", length=255)
       */
-    protected $id_osoby;
-    
+	protected $temat;
+	
 
+     /**
+      * @ORM\Column(type="date")
+      */
+	protected $data_lekcji;
+	
      /**
       * @ORM\ManyToOne(targetEntity="Zajecia")
       * @ORM\JoinColumn(name="id_zajec", referencedColumnName="id_zajec")
       */
     protected $id_zajec;
-    
-
 
     /**
-     * Get id_obecnosci
+     * Get id_lekcji
      *
      * @return integer 
      */
-    public function getIdObecnosci()
+    public function getIdLekcji()
     {
-        return $this->id_obecnosci;
+        return $this->id_lekcji;
     }
 
     /**
-     * Set id_osoby
+     * Set temat
      *
-     * @param integer $idOsoby
-     * @return Obecnosci
+     * @param string $temat
+     * @return Lekcje
      */
-    public function setIdOsoby($idOsoby)
+    public function setTemat($temat)
     {
-        $this->id_osoby = $idOsoby;
+        $this->temat = $temat;
 
         return $this;
     }
 
     /**
-     * Get id_osoby
+     * Get temat
      *
-     * @return integer 
+     * @return string 
      */
-    public function getIdOsoby()
+    public function getTemat()
     {
-        return $this->id_osoby;
+        return $this->temat;
     }
 
     /**
-     * Set id_zajecia
+     * Set data_lekcji
      *
-     * @param integer $idZajecia
-     * @return Obecnosci
+     * @param \DateTime $dataLekcji
+     * @return Lekcje
      */
-    public function setIdZajecia($idZajecia)
+    public function setDataLekcji($dataLekcji)
     {
-        $this->id_zajecia = $idZajecia;
+        $this->data_lekcji = $dataLekcji;
 
         return $this;
     }
 
     /**
-     * Get id_zajecia
+     * Get data_lekcji
      *
-     * @return integer 
+     * @return \DateTime 
      */
-    public function getIdZajecia()
+    public function getDataLekcji()
     {
-        return $this->id_zajecia;
+        return $this->data_lekcji;
     }
 
     /**
      * Set id_zajec
      *
      * @param \Studenciak\StudentBundle\Entity\Zajecia $idZajec
-     * @return Obecnosci
+     * @return Lekcje
      */
     public function setIdZajec(\Studenciak\StudentBundle\Entity\Zajecia $idZajec = null)
     {
