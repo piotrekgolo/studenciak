@@ -86,6 +86,9 @@ zajeciaZapiszSie:
     path: /zajecia/zapisz/{id}
     defaults: { _controller: StudenciakBundle:Page:zajeciaZapiszSie }
 
+zajeciaPokazLekcje:
+    path: /zajecia/lekcja/{id}
+    defaults: { _controller: StudenciakBundle:Page:zajeciaPokazLekcje }
 
 
 

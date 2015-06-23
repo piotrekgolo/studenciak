@@ -276,6 +276,12 @@ class PageController extends Controller
 				$em->persist($task);
 				$em->flush();
 
+				$osobaprzedmiot = new OsobaPrzedmiot();
+				$osobaprzedmiot->setIdOsoby($osoba);
+				$osobaprzedmiot->setIdPrzedmiotu($przedmiot);
+				$em->persist($osobaprzedmiot);
+				$em->flush();			
+
 				return $this->redirect($this->generateUrl('przedmiotPokaz', array('id' => $przedmiot->getIdPrzedmiotu())));
 			}
 
@@ -325,8 +331,6 @@ class PageController extends Controller
 		if ($form->isValid()) {
 
 			$haslo = $form->get('haslo')->getData();
-			$this->zobacz($haslo);
-			$this->zobacz($przedmiot->getHaslo());
 			if ($haslo == $przedmiot->getHaslo())
 			{
 				$osoba_przedmiot = new OsobaPrzedmiot();
@@ -486,7 +490,36 @@ class PageController extends Controller
 		$em->flush();
 
 		return $this->redirect($this->generateUrl('zajeciaPokaz', array('id' => $id)));
-
-
 	}
+
+
+	public function zajeciaPokazLekcjeAction($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$session = $this->getRequest()->getSession();
+		
+		$lekcja = $em->getRepository('StudenciakBundle:Lekcje')->find($id);		
+		$id_zajec = $lekcja->getIdZajec()->getIdZajec();
+
+		$czy_zapisany = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaZajecia')
+		->findBy(array('id_osoby'=>$session->get('id'), 'id_zajec'=>$id_zajec));
+
+		$zapisani_zajecia = $em->getRepository('StudenciakBundle:OsobaZajecia')->findBy(array('id_zajec'=>$id_zajec));
+
+		$zapisane_osoby = array();
+
+		foreach ($zapisani_zajecia as $osoba) {					//wyciągamy osoby z tablicy obiektow OsobaZajecia
+			$zapisane_osoby[] = $osoba->getIdOsoby();
+		}
+
+		////tu czeba dopisać obecności
+
+
+		return $this->render('StudenciakBundle:Page:extend/zajeciaPokazLekcje.html.twig', 
+			array('lekcja' => $lekcja, 'zapisany' => $czy_zapisany, 'zapisane_osoby'=>$zapisane_osoby));
+	}
+
+
+
+
 }
