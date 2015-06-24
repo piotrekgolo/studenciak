@@ -1,98 +1,116 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
 {% block title %}
-    Zajęcia
+  Zajęcia
 {% endblock %}
 
 {% block general %}
-    active
+  active
 {% endblock %}
 {% block przedmiot %}
-    active
+  active
 {% endblock %}
 
 {% block view %}
-    <div class="db-breadcrumbs">
-        <a class="db-brdcmb-item" href="#">
-            <i class="icon-home"></i>
-        </a>
-        <a class="db-brdcmb-item" href="#">
-            Ogólne
-        </a>
-        <a class="db-brdcmb-item" href="#">
-            Zajęcia
-        </a>
-    </div>
+  <div class="db-breadcrumbs">
+    <a class="db-brdcmb-item" href="#">
+      <i class="icon-home"></i>
+    </a>
+    <a class="db-brdcmb-item" href="#">
+      Ogólne
+    </a>
+    <a class="db-brdcmb-item" href="#">
+      Zajęcia
+    </a>
+  </div>
 
 
 
 
-    <h2>{{ lekcja.getIdZajec.getIdPrzedmiotu.getNazwa }}</h2>
-    Prowadzący: {{ lekcja.getIdZajec.getIdPrzedmiotu.getIdOsoby.getNazwisko }}
-    <br />
-    Termin: {{lekcja.getIdZajec.getTermin|date("D,  G:i ")}}
-    <br />
-    Sala: {{lekcja.getIdZajec.getSala}}
-    <br />
-    Typ zajęć: 
-    {% if (lekcja.getIdZajec.getTypZajec == 'l') %} laboratorium
-        {% elseif (lekcja.getIdZajec.getTypZajec == 'w') %} wykład
-        {% elseif (lekcja.getIdZajec.getTypZajec == 'c') %} ćwiczenia
-        {% elseif (lekcja.getIdZajec.getTypZajec == 'p') %} projekt
-    {% endif %}
-    <br /><br />
-    Data zajęć: {{ lekcja.getDataLekcji|date("d-m-Y") }}
-    <br />
-    Temat: {{ lekcja.getTemat }}   
-    {% if ((zapisany) or (app.session.get('admin'))) %} 
+  <h2>{{ lekcja.getIdZajec.getIdPrzedmiotu.getNazwa }}</h2>
+  Prowadzący: {{ lekcja.getIdZajec.getIdPrzedmiotu.getIdOsoby.getNazwisko }}
+  <br />
+  Termin: {{lekcja.getIdZajec.getTermin|date("D,  G:i ")}}
+  <br />
+  Sala: {{lekcja.getIdZajec.getSala}}
+  <br />
+  Typ zajęć: 
+  {% if (lekcja.getIdZajec.getTypZajec == 'l') %} laboratorium
+    {% elseif (lekcja.getIdZajec.getTypZajec == 'w') %} wykład
+    {% elseif (lekcja.getIdZajec.getTypZajec == 'c') %} ćwiczenia
+    {% elseif (lekcja.getIdZajec.getTypZajec == 'p') %} projekt
+  {% endif %}
+  <br /><br />
+  Data zajęć: {{ lekcja.getDataLekcji|date("d-m-Y") }}
+  <br />
+  Temat: {{ lekcja.getTemat }}
+  <br /> 
+ {% if ( not (sprawdz) and (app.session.get('admin'))) %} 
+   <br /> 
+   <a href="{{ path('zajeciaPokazLekcjeSprawdzObecnosc', {'id' : lekcja.getIdLekcji, 'sprawdz': 1}) }}">
+  <button type="submit">
+          <i class="icon-note"></i> <span>Sprawdź obecność</span>
+        </button>
+      </a>
+ {% endif %}
+  <br />   
+  {% if ((zapisany) or (app.session.get('admin'))) %} 
 
- <table>
+
+   <table>
     <tr>
-      <th style="width: 10%">Avatar</th>
-      <th style="width: 30%">Imię i nazwisko</th>
+      <th style="width: 40%">Imię i nazwisko</th>
       <th style="width: 40%">E-mail</th>
-      <th style="width: 10%; padding-right: 0px;">Akt/Usuń</th>
-      <th style="width: 10%">Admin</th>
+      <th style="width: 10%">Obecność</th>
     </tr>
     {% for osoba in zapisane_osoby %}
       <tr>
-        <td>
-          {% if osoba.getZdjecie == null %}
-            {% image 'bundles/studenciak/images/empty_avatar.jpg' %}
-            <img src="{{ asset_url }}" alt="Studenciak" />
-            {% endimage %}
-            {% else %}
-            <img src="{{ osoba.getZdjecie }}" style="width: 96px; height=96px" />
-          {% endif %}
-        </td>
         <td>{{ osoba.getNazwisko }}</td>
         <td>{{ osoba.getEmail }}</td>
-        <td class="buttony">
-          {% if osoba.getAktywny == 0 %}
-            <a href="{{ path('aktywuj', {'id' : osoba.getIdOsoby})}}"><button title="Aktywuj" style="font-size: 40px"><i class="icon-user-following"></i></button></a>
+        <td class="buttony" style="text-align: center">
+          {% if osoba in obecni %}
+           <span class="icon-check" style="font-size: 30px; color: #38A52D"></span>
+           {% else %}
+           {% if (app.session.get('admin') and sprawdz) %}
+
+            <a href="{{ path('zajeciaLekcjaObecnySprawdz', {'id' : lekcja.getIdLekcji, 'uczen': osoba.getIdOsoby})}}">
+              <button title="Obecny" style="font-size: 20px"><i class="icon-user-following"></i></button>
+            </a>
+
             {% else %}
-            <a href="{{ path('osobaUsun', {'id' : osoba.getIdOsoby})}}"><button title="Usuń"><i class="icon-user-unfollow"></i></button></a>
-          {% endif %}
-        </td>
-        <td class="buttony">
-          {% if (osoba.getEmail != app.session.get('email')) %}   {# nie można odebrać sobie uprawnień #}
-            {% if (osoba.getAdmin == 0) %}
-              <a href="{{ path('osobaAdmin', {'tryb': 1, 'id' : osoba.getIdOsoby})}}"><button title="Mianuj administratorem"><i class="icon-check"></i></button></a>
+            {% if osoba.getEmail == app.session.get('email') %}
+              <a href="{{ path('zajeciaLekcjaObecny', {'id' : lekcja.getIdLekcji})}}">
+                <button title="Obecny" style="font-size: 20px"><i class="icon-user-following"></i></button>
+              </a>
               {% else %}
-              <a href="{{ path('osobaAdmin', {'tryb': 0, 'id' : osoba.getIdOsoby})}}"><button title="Odbierz uprawnienia administratora"><i class="icon-close"></i></button></a>
+              <span class="icon-close" style="font-size: 30px; color: #F20404"></span>
             {% endif %}
           {% endif %}
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+</table>
 
 
-        {% else %}
-        <div class="db-logged" >
-            <br/>Aby zobaczyć tematy zapisz się na zajęcia<br/>
-        </div>
-    {% endif %}
+<table>
+  <tr>
+    <th style="width: 33%">Wszystkich</th>
+    <th style="width: 33%">Obecnych</th>
+    <th style="width: 33%">Nieobecnych</th>
+  </tr>
+  <tr>
+    <td>{{ zapisane_osoby|length }}</td>
+    <td style="color: #38A52D">{{ obecni|length }}</td>
+    <td style="color: #F20404">{{ ((zapisane_osoby|length)-(obecni|length)) }}</td>
+  </tr>
+</table>
+
+{% else %}
+<div class="db-logged" >
+  <br/>Aby zobaczyć tematy zapisz się na zajęcia<br/>
+</div>
+{% endif %}
 
 {% endblock %}
 

@@ -14,6 +14,7 @@ use Studenciak\StudentBundle\Entity\Lekcje;
 use Studenciak\StudentBundle\Entity\Zajecia;
 use Studenciak\StudentBundle\Entity\OsobaPrzedmiot;
 use Studenciak\StudentBundle\Entity\OsobaZajecia;
+use Studenciak\StudentBundle\Entity\Obecnosci;
 
 
 class PageController extends Controller
@@ -87,7 +88,6 @@ class PageController extends Controller
 		{
 			$em = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
 			$osoby = $em->findBy(array(), array('email'=>'ASC'));
-
 			return $this->render('StudenciakBundle:Page:extend/osoby.html.twig', array('osoby' => $osoby));
 		}
 		else
@@ -493,7 +493,7 @@ class PageController extends Controller
 	}
 
 
-	public function zajeciaPokazLekcjeAction($id)
+	public function zajeciaPokazLekcjeAction($id, $sprawdz=0)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$session = $this->getRequest()->getSession();
@@ -504,22 +504,62 @@ class PageController extends Controller
 		$czy_zapisany = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaZajecia')
 		->findBy(array('id_osoby'=>$session->get('id'), 'id_zajec'=>$id_zajec));
 
-		$zapisani_zajecia = $em->getRepository('StudenciakBundle:OsobaZajecia')->findBy(array('id_zajec'=>$id_zajec));
+		$zapisani_zajecia = $em->getRepository('StudenciakBundle:OsobaZajecia');//->findBy(array('id_zajec'=>$id_zajec));
+
+		$sortowanie_zapisanych = $zapisani_zajecia->createQueryBuilder('z')->select('z')->join('z.id_osoby', 'o')->
+		where('z.id_zajec = ?1')->setParameter(1, $id_zajec)->orderBy('o.nazwisko', 'ASC');		// 3 godziny szukania - ale sie udało
+
+		$zapisani_zajecia = $sortowanie_zapisanych->getQuery()->getResult();
 
 		$zapisane_osoby = array();
-
 		foreach ($zapisani_zajecia as $osoba) {					//wyciągamy osoby z tablicy obiektow OsobaZajecia
 			$zapisane_osoby[] = $osoba->getIdOsoby();
 		}
 
-		////tu czeba dopisać obecności
+		$obecni_na_lekcji = $em->getRepository('StudenciakBundle:Obecnosci')->findBy(array('id_lekcji'=>$lekcja->getIdLekcji()));
+		$obecni = array();
+		foreach ($obecni_na_lekcji as $ob) {					//wyciągamy osoby z tablicy obiektow OsobaZajecia
+			$obecni[] = $ob->getIdOsoby();
+		}
 
 
 		return $this->render('StudenciakBundle:Page:extend/zajeciaPokazLekcje.html.twig', 
-			array('lekcja' => $lekcja, 'zapisany' => $czy_zapisany, 'zapisane_osoby'=>$zapisane_osoby));
+			array('lekcja' => $lekcja, 'zapisany' => $czy_zapisany, 'zapisane_osoby'=>$zapisane_osoby, 'obecni'=>$obecni, 'sprawdz'=>$sprawdz));
 	}
 
+	public function zajeciaLekcjaObecnyAction($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$session = $this->getRequest()->getSession();
+		
+		$lekcja = $em->getRepository('StudenciakBundle:Lekcje')->find($id);		
+		$osoba = $em->getRepository('StudenciakBundle:Osoba')->findOneByEmail($session->get('email'));	//pobieramy siebie z bazy
 
+		$obecnosc = new Obecnosci();
+		$obecnosc->setIdOsoby($osoba);
+		$obecnosc->setIdLekcji($lekcja);
 
+		$em->persist($obecnosc);
+		$em->flush();
 
+		return $this->redirect($this->generateUrl('zajeciaPokazLekcje', array('id' => $id)));
+	}
+
+	public function zajeciaLekcjaObecnySprawdzAction($id, $uczen)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$session = $this->getRequest()->getSession();
+		
+		$lekcja = $em->getRepository('StudenciakBundle:Lekcje')->find($id);		
+		$osoba = $em->getRepository('StudenciakBundle:Osoba')->find($uczen);	
+
+		$obecnosc = new Obecnosci();
+		$obecnosc->setIdOsoby($osoba);
+		$obecnosc->setIdLekcji($lekcja);
+
+		$em->persist($obecnosc);
+		$em->flush();
+
+		return $this->redirect($this->generateUrl('zajeciaPokazLekcjeSprawdzObecnosc', array('id' => $id, 'sprawdz' => 1)));
+	}
 }

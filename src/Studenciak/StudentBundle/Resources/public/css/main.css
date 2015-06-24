@@ -1003,6 +1003,7 @@ h2 {
 td
 {
 	vertical-align: middle;
+	word-break: break-all;
 }
 
 td.buttony button
