@@ -1,0 +1,49 @@
+{% extends 'StudenciakBundle:Page:base.html.twig' %}
+
+
+{% block title %}
+	Osoby
+{% endblock %}
+
+{% block general %}
+	active
+{% endblock %}
+{% block osoby %}
+	active
+{% endblock %}
+
+
+{% block view %}
+
+	<div class="db-breadcrumbs">
+		<a class="db-brdcmb-item" href="{{ path('index') }}">
+			<i class="icon-home"></i>
+		</a>
+		<a class="db-brdcmb-item" href="{{ path('osoby') }}">
+			Osoby
+		</a>
+		<a class="db-brdcmb-item" href="{{ path('osobaZablokuj', {'id': osoba.getIdOsoby}) }}">
+			Zablokuj osobę
+		</a>
+	</div>
+	<h2>Blokowanie osoby</h2>
+
+	<div class="db-logged" >
+		Czy na pewno chcesz dezaktywować konto wybranej osobę?
+		<br /><br />
+		<img src='{{ osoba.getZdjecie }}' />
+		<br />
+		{{ osoba.getNazwisko }}
+
+		<br />
+
+		{{ osoba.getEmail }}
+
+		<br /><br />
+		<a href="{{ path('osobaZablokowanie', {'id' : osoba.getIdOsoby})}}">
+			<button><span>Zablokuj</span></button></a>
+		</a>
+	</div>
+
+
+{% endblock %}

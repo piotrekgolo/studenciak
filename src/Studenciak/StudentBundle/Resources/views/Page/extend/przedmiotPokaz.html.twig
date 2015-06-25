@@ -12,68 +12,68 @@
 {% endblock %}
 
 {% block view %}
-    <div class="db-breadcrumbs">
-        <a class="db-brdcmb-item" href="#">
-            <i class="icon-home"></i>
-        </a>
-        <a class="db-brdcmb-item" href="#">
-            Ogólne
-        </a>
-        <a class="db-brdcmb-item" href="#">
-            Zajęcia
+  <div class="db-breadcrumbs">
+    <a class="db-brdcmb-item" href="{{ path('index') }}">
+      <i class="icon-home"></i>
+  </a>
+  <a class="db-brdcmb-item" href="{{ path('przedmiot') }}">
+      Przedmioty
+  </a>
+  <a class="db-brdcmb-item" href="{{ path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu}) }}">
+      Pokaż przedmiot
+  </a>
+</div>
+
+
+{% if app.session.get('admin') == 1 %} 
+
+    <div class="db-logged" >
+        <a href="{{path('przedmiotDodajZajecia', {'id_przedmiotu': przedmiot.getIdPrzedmiotu})}}">
+            <button><i class="icon-plus"></i><span>Dodaj zajęcia</span></button>
         </a>
     </div>
+{% endif %}
+
+<h2>{{ przedmiot.getNazwa }}</h2>
+Prowadzący: {{ przedmiot.getIdOsoby.getNazwisko }}
+<br />
 
 
-    {% if app.session.get('admin') == 1 %} 
-
-        <div class="db-logged" >
-            <a href="{{path('przedmiotDodajZajecia', {'id_przedmiotu': przedmiot.getIdPrzedmiotu})}}">
-                <button><i class="icon-plus"></i><span>Dodaj zajęcia</span></button>
-            </a>
-        </div>
-    {% endif %}
-
-    <h2>{{ przedmiot.getNazwa }}</h2>
-    Prowadzący: {{ przedmiot.getIdOsoby.getNazwisko }}
+{% if zajecia is empty %} 
     <br />
+    Brak zajęć dla wybranego przedmiotu
+    {% else %}
 
 
-    {% if zajecia is empty %} 
-        <br />
-        Brak zajęć dla wybranego przedmiotu
-        {% else %}
+    <table>
+        <tr>
+            <th width="30%">Termin</th>
+            <th width="40%">Prowadzący</th>
+            <th width="15%">Sala</th>
+            <th width="15%">Rodzaj</th>
+        </tr>
 
 
-        <table>
+        {% for z in zajecia %}
+
             <tr>
-                <th width="30%">Termin</th>
-                <th width="40%">Prowadzący</th>
-                <th width="15%">Sala</th>
-                <th width="15%">Rodzaj</th>
+                <td><a href="{{path('zajeciaPokaz', {'id': z.getIdZajec})}}">{{ z.getTermin|date("D,  G:i ") }}</a></td>
+                <td>{{ z.getIdOsoby.getNazwisko}}</td>
+                <td>{{ z.getSala }}</td>
+                <td>
+                    {% if (z.getTypZajec == 'l') %} laboratorium
+                        {% elseif (z.getTypZajec == 'w') %} wykład
+                        {% elseif (z.getTypZajec == 'c') %} ćwiczenia
+                        {% elseif (z.getTypZajec == 'p') %} projekt
+                    {% endif %}
+                </td>
             </tr>
 
 
-            {% for z in zajecia %}
 
-                <tr>
-                    <td><a href="{{path('zajeciaPokaz', {'id': z.getIdZajec})}}">{{ z.getTermin|date("D,  G:i ") }}</a></td>
-                    <td>{{ z.getIdOsoby.getNazwisko}}</td>
-                    <td>{{ z.getSala }}</td>
-                    <td>
-                        {% if (z.getTypZajec == 'l') %} laboratorium
-                            {% elseif (z.getTypZajec == 'w') %} wykład
-                            {% elseif (z.getTypZajec == 'c') %} ćwiczenia
-                            {% elseif (z.getTypZajec == 'p') %} projekt
-                        {% endif %}
-                    </td>
-                </tr>
+        {% endfor %}
+    </table>
 
-
-
-            {% endfor %}
-        </table>
-
-    {% endif %}
+{% endif %}
 {% endblock %}
 

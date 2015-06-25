@@ -13,17 +13,22 @@
 
 {% block view %}
   <div class="db-breadcrumbs">
-    <a class="db-brdcmb-item" href="#">
+    <a class="db-brdcmb-item" href="{{ path('index') }}">
       <i class="icon-home"></i>
     </a>
-    <a class="db-brdcmb-item" href="#">
-      Ogólne
+    <a class="db-brdcmb-item" href="{{ path('przedmiot') }}">
+      Przedmioty
     </a>
-    <a class="db-brdcmb-item" href="#">
-      Zajęcia
+    <a class="db-brdcmb-item" href="{{ path('przedmiotPokaz', {'id': lekcja.getIdZajec.getIdPrzedmiotu.getIdPrzedmiotu}) }}">
+      Pokaż przedmiot
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('zajeciaPokaz', {'id': lekcja.getIdZajec.getIdZajec }) }}">
+      Pokaż zajęcia
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('zajeciaPokazLekcje', {'id': lekcja.getIdLekcji }) }}">
+      Pokaż lekcję
     </a>
   </div>
-
 
 
 
@@ -45,54 +50,65 @@
   <br />
   Temat: {{ lekcja.getTemat }}
   <br /> 
- {% if ( not (sprawdz) and (app.session.get('admin'))) %} 
-   <br /> 
+  <br /> 
+  {% if ( not (sprawdz) and (app.session.get('admin'))) %}    {# przycisk do sprawdzania obecnosci dla adminach #}
    <a href="{{ path('zajeciaPokazLekcjeSprawdzObecnosc', {'id' : lekcja.getIdLekcji, 'sprawdz': 1}) }}">
-  <button type="submit">
-          <i class="icon-note"></i> <span>Sprawdź obecność</span>
-        </button>
-      </a>
- {% endif %}
-  <br />   
-  {% if ((zapisany) or (app.session.get('admin'))) %} 
+    <button type="submit">
+      <i class="icon-note"></i> <span>Sprawdź obecność</span>
+    </button>
+  </a>
+{% endif %}
+{% if (app.session.get('admin')) %}   {# przycisk do zmiany tematu dla adminach #}
+  <a href="{{ path('zajeciaLekcjaZmienTemat', {'id' : lekcja.getIdLekcji, 'tryb': 0}) }}" style="margin-left: 10px;">
+    <button type="submit">
+      <i class="icon-note"></i> <span>Zmień temat zajęć</span>
+    </button>
+  </a><br />  
+{% endif %}
+<br />   
+{% if ((zapisany) or (app.session.get('admin'))) %} 
 
-
-   <table>
+{% if (zapisane_osoby|length) != 0 %}
+ <table>
+  <tr>
+    <th style="width: 40%">Imię i nazwisko</th>
+    <th style="width: 40%">E-mail</th>
+    <th style="width: 10%">Obecność</th>
+  </tr>
+  {% for osoba in zapisane_osoby %}
     <tr>
-      <th style="width: 40%">Imię i nazwisko</th>
-      <th style="width: 40%">E-mail</th>
-      <th style="width: 10%">Obecność</th>
-    </tr>
-    {% for osoba in zapisane_osoby %}
-      <tr>
-        <td>{{ osoba.getNazwisko }}</td>
-        <td>{{ osoba.getEmail }}</td>
-        <td class="buttony" style="text-align: center">
-          {% if osoba in obecni %}
-           <span class="icon-check" style="font-size: 30px; color: #38A52D"></span>
-           {% else %}
-           {% if (app.session.get('admin') and sprawdz) %}
+      <td>{{ osoba.getNazwisko }}</td>
+      <td>{{ osoba.getEmail }}</td>
+      <td class="buttony" style="text-align: center">
+        {% if osoba in obecni %}
+         <span class="icon-check" style="font-size: 30px; color: #38A52D"></span>
+         {% else %}
+         {% if (app.session.get('admin') and sprawdz) %}
 
-            <a href="{{ path('zajeciaLekcjaObecnySprawdz', {'id' : lekcja.getIdLekcji, 'uczen': osoba.getIdOsoby})}}">
+          <a href="{{ path('zajeciaLekcjaObecnySprawdz', {'id' : lekcja.getIdLekcji, 'uczen': osoba.getIdOsoby})}}">
+            <button title="Obecny" style="font-size: 20px"><i class="icon-user-following"></i></button>
+          </a>
+
+          {% else %}
+          {% if osoba.getEmail == app.session.get('email') %}
+            <a href="{{ path('zajeciaLekcjaObecny', {'id' : lekcja.getIdLekcji})}}">
               <button title="Obecny" style="font-size: 20px"><i class="icon-user-following"></i></button>
             </a>
-
             {% else %}
-            {% if osoba.getEmail == app.session.get('email') %}
-              <a href="{{ path('zajeciaLekcjaObecny', {'id' : lekcja.getIdLekcji})}}">
-                <button title="Obecny" style="font-size: 20px"><i class="icon-user-following"></i></button>
-              </a>
-              {% else %}
-              <span class="icon-close" style="font-size: 30px; color: #F20404"></span>
-            {% endif %}
+            <span class="icon-close" style="font-size: 30px; color: #F20404"></span>
           {% endif %}
         {% endif %}
-      </td>
-    </tr>
-  {% endfor %}
+      {% endif %}
+    </td>
+  </tr>
+{% endfor %}
 </table>
+{% endif %}
 
 
+{% if (zapisane_osoby|length)== 0 %}
+  Brak zapisanych osób
+{% else %}
 <table>
   <tr>
     <th style="width: 33%">Wszystkich</th>
@@ -105,7 +121,7 @@
     <td style="color: #F20404">{{ ((zapisane_osoby|length)-(obecni|length)) }}</td>
   </tr>
 </table>
-
+{% endif %}
 {% else %}
 <div class="db-logged" >
   <br/>Aby zobaczyć tematy zapisz się na zajęcia<br/>

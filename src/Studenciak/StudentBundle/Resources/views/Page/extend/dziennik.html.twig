@@ -10,3 +10,18 @@
 {% block dziennik %}
 	active
 {% endblock %}
+
+{% block view %}
+	<div class="db-breadcrumbs">
+		<a class="db-brdcmb-item" href="{{ path('index') }}">
+			<i class="icon-home"></i>
+		</a>
+		<a class="db-brdcmb-item" href="{{ path('dziennik') }}">
+			Dziennik
+		</a>
+	</div>
+
+<h2>Dziennik</h2>
+	
+
+{% endblock %}

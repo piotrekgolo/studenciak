@@ -1,0 +1,75 @@
+{% extends 'StudenciakBundle:Page:base.html.twig' %}
+
+{% block title %}
+	Dodaj zajecia
+{% endblock %}
+
+{% block general %}
+	active
+{% endblock %}
+{% block przedmiot %}
+	active
+{% endblock %}
+
+{% block view %}
+  <div class="db-breadcrumbs">
+    <a class="db-brdcmb-item" href="{{ path('index') }}">
+      <i class="icon-home"></i>
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('przedmiot') }}">
+      Przedmioty
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('przedmiotPokaz', {'id': lekcja.getIdZajec.getIdPrzedmiotu.getIdPrzedmiotu}) }}">
+      Pokaż przedmiot
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('zajeciaPokaz', {'id': lekcja.getIdZajec.getIdZajec }) }}">
+      Pokaż zajęcia
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('zajeciaPokazLekcje', {'id': lekcja.getIdLekcji }) }}">
+      Pokaż lekcję
+    </a>
+        <a class="db-brdcmb-item" href="{{ path('zajeciaLekcjaZmienTemat', {'id': lekcja.getIdLekcji, 'tryb': 0}) }}">
+      Zmień temat
+    </a>
+  </div>
+
+	{% if app.session.get('admin') == 1 %} 
+
+
+		<div class="db-logged" >
+			<h2>Zmiana tematu lekcji</h2>
+			<br />
+
+
+			{{ form_start(form) }}
+			{{ form_errors(form) }}
+
+			<table>
+				<tr>
+					<td>{{ form_label(form.data_lekcji) }}</td>
+					<td>{{ form_widget(form.data_lekcji) }}{{ form_errors(form.data_lekcji) }}</td>
+				</tr>
+				<tr>
+					<td>{{ form_label(form.temat) }}</td>
+					<td><span class="form-text-input">{{ form_widget(form.temat) }}{{ form_errors(form.temat) }}</span></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" value="Edytuj zajęcia" /></td>
+				</tr>
+			</table>
+
+
+
+			{{ form_end(form) }}
+
+		</div>
+
+
+
+
+
+
+
+	{% endif %}
+{% endblock %}
+

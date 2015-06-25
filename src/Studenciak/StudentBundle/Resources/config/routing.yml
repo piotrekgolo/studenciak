@@ -1,5 +1,5 @@
 index:
-    pattern:  /
+    path:  /
     defaults: { _controller: StudenciakBundle:Page:index }
 
 przedmiot:
@@ -35,20 +35,20 @@ login:
     defaults: { _controller: StudenciakBundle:Page:login }
 
 loginAjax:
-    pattern:  /update/data/from/ajax/call
+    path:  /update/data/from/ajax/call
     defaults: { _controller: StudenciakBundle:Page:loginAjax }
 
 logoutSession:
     path:     /logoutSession
     defaults: { _controller: StudenciakBundle:Page:logoutSession }
 
-osobaUsun:
-    path: /osoby/usun/{id}
-    defaults: { _controller: StudenciakBundle:Page:osobaUsun }
+osobaZablokuj:
+    path: /osoby/zablokuj/{id}
+    defaults: { _controller: StudenciakBundle:Page:osobaZablokuj }
 
-osobaUsuwanie:
-    path: /usuwanie/{id}
-    defaults: { _controller: StudenciakBundle:Page:osobaUsuwanie }
+osobaZablokowanie:
+    path: /zablokowanie/{id}
+    defaults: { _controller: StudenciakBundle:Page:osobaZablokowanie }
 
 osobaAdmin:
     path: /osoby/admin/{tryb}/{id}
@@ -101,3 +101,7 @@ zajeciaLekcjaObecny:
 zajeciaLekcjaObecnySprawdz:
     path: /zajecia/obecny/{id}/{uczen}
     defaults: { _controller: StudenciakBundle:Page:zajeciaLekcjaObecnySprawdz }
+
+zajeciaLekcjaZmienTemat:
+    path: /zajecia/lekcjaa/zmien/{id}/{tryb}
+    defaults: { _controller: StudenciakBundle:Page:zajeciaLekcjaZmienTemat }

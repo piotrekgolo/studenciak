@@ -30,7 +30,16 @@
 
 {% block view %}
 
-
+  <div class="db-breadcrumbs">
+    <a class="db-brdcmb-item" href="{{ path('index') }}">
+      <i class="icon-home"></i>
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('logout') }}">
+      Wyloguj
+    </a>
+  </div>
+  <h2>Wylogowywanie</h2>
+  <br />
 
   <div class="db-logged" >
     Czy na pewno chcesz się wylogować?

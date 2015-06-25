@@ -1,88 +1,113 @@
 {% extends 'StudenciakBundle:Page:base.html.twig' %}
 
 {% block title %}
-    Zajęcia
+  Zajęcia
 {% endblock %}
 
 {% block general %}
-    active
+  active
 {% endblock %}
 {% block przedmiot %}
-    active
+  active
 {% endblock %}
 
 {% block view %}
-    <div class="db-breadcrumbs">
-        <a class="db-brdcmb-item" href="#">
-            <i class="icon-home"></i>
-        </a>
-        <a class="db-brdcmb-item" href="#">
-            Ogólne
-        </a>
-        <a class="db-brdcmb-item" href="#">
-            Zajęcia
-        </a>
+  <div class="db-breadcrumbs">
+    <a class="db-brdcmb-item" href="{{ path('index') }}">
+      <i class="icon-home"></i>
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('przedmiot') }}">
+      Przedmioty
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('przedmiotPokaz', {'id': zajecia.getIdPrzedmiotu.getIdPrzedmiotu}) }}">
+      Pokaż przedmiot
+    </a>
+    <a class="db-brdcmb-item" href="{{ path('zajeciaPokaz', {'id': zajecia.getIdZajec }) }}">
+      Pokaż zajęcia
+    </a>
+  </div>
+
+
+  {% if app.session.get('admin') == 1 %} 
+
+    <div class="db-logged" >
+      <a href="{{path('zajeciaDodaj', {'id': zajecia.getIdZajec})}}">
+        <button><i class="icon-plus"></i><span>Dodaj termin zajęć</span></button>
+      </a>
     </div>
 
+  {% endif %}
 
-    {% if app.session.get('admin') == 1 %} 
-
-        <div class="db-logged" >
-            <a href="{{path('zajeciaDodaj', {'id': zajecia.getIdZajec})}}">
-                <button><i class="icon-plus"></i><span>Dodaj termin zajęć</span></button>
-            </a>
-        </div>
-
-    {% endif %}
-
-    <h2>{{ zajecia.getIdPrzedmiotu.getNazwa }}</h2>
-    Prowadzący: {{ zajecia.getIdPrzedmiotu.getIdOsoby.getNazwisko }}
-    <br />
-    Termin: {{zajecia.getTermin|date("D,  G:i ")}}
-    <br />
-    Sala: {{zajecia.getSala}}
-    <br />
-    Typ zajęć: {% if (zajecia.getTypZajec == 'l') %} laboratorium
-    {% elseif (zajecia.getTypZajec == 'w') %} wykład
-    {% elseif (zajecia.getTypZajec == 'c') %} ćwiczenia
-    {% elseif (zajecia.getTypZajec == 'p') %} projekt
+  <h2>{{ zajecia.getIdPrzedmiotu.getNazwa }}</h2>
+  Prowadzący: {{ zajecia.getIdPrzedmiotu.getIdOsoby.getNazwisko }}
+  <br />
+  Termin: {{zajecia.getTermin|date("D,  G:i ")}}
+  <br />
+  Sala: {{zajecia.getSala}}
+  <br />
+  Typ zajęć: {% if (zajecia.getTypZajec == 'l') %} laboratorium
+  {% elseif (zajecia.getTypZajec == 'w') %} wykład
+  {% elseif (zajecia.getTypZajec == 'c') %} ćwiczenia
+  {% elseif (zajecia.getTypZajec == 'p') %} projekt
 {% endif %}
 <br />
 
 {% if ((zapisany) or (app.session.get('admin'))) %} 
-    {% if lekcje is empty %} 
-        <br />
-        Brak tematów dla wybranych zajęć
-        {% else %}
-
-        <table>
-            <tr>
-                <th width="20%">Data</th>
-                <th width="50%">Temat</th>
-                <th width="30%">Obecności</th>
-            </tr>
-
-
-            {% for l in lekcje %}
-                <tr>
-                    <td><a href="{{path('zajeciaPokazLekcje', {'id': l.getIdLekcji})}}">{{ l.getDataLekcji|date("d-m-Y") }}</a></td>
-                    <td>{{ l.getTemat}}</td>
-                    <td>{{ l.getIdZajec.getSala }}</td>
-                </tr>
-
-
-
-            {% endfor %}
-        </table>
-    {% endif %}
-
+  {% if lekcje is empty %} 
+    <br />
+    Brak tematów dla wybranych zajęć
     {% else %}
-    <div class="db-logged" >
-        <br/>Aby zobaczyć tematy zapisz się na zajęcia<br/>
-        <a href="{{path('zajeciaZapiszSie', {'id': zajecia.getIdZajec})}}">
-            <button><i class="icon-note"></i><span>Zapisz się na zajęcia</span></button>
-        </a>
-    </div>
+
+    <table>
+      <tr>
+        <th width="20%">Data</th>
+        <th width="45%">Temat</th>
+        <th width="20%">Obecności</th>
+        {% if app.session.get('admin') == 1 %} 
+          <th width="15%">Zmień temat</th>
+        {% endif %}
+      </tr>
+
+
+      {% for l in lekcje %}
+        <tr>
+          <td><a href="{{path('zajeciaPokazLekcje', {'id': l.getIdLekcji})}}">{{ l.getDataLekcji|date("d-m-Y") }}</a></td>
+          <td><a href="{{path('zajeciaPokazLekcje', {'id': l.getIdLekcji})}}">{{ l.getTemat}}</a></td>
+          <td>
+            {% if wszystkich == 0 %} 
+              -
+              {% else %} 
+              {% if obecni[l.getIdLekcji] is defined %} 
+               {{ obecni[l.getIdLekcji] }} 
+               {% else %} 
+               0
+             {% endif %} 
+             / {{wszystkich}}
+           {% endif %} 
+         </td>
+         {% if app.session.get('admin') == 1 %} 
+          <td>
+            <a href="{{ path('zajeciaLekcjaZmienTemat', {'id' : l.getIdLekcji, 'tryb': 1}) }}" style="margin-left: 10px;">
+              <button type="submit"><i class="icon-note"></i></button>
+            </a>
+          </td>
+        {% endif %}
+      </tr>
+
+
+
+
+    {% endfor %}
+  </table>
+{% endif %}
+
+{% else %}
+<div class="db-logged" >
+  <br/>Aby zobaczyć tematy zapisz się na zajęcia<br/>
+  <a href="{{path('zajeciaZapiszSie', {'id': zajecia.getIdZajec})}}">
+    <button><i class="icon-note"></i><span>Zapisz się na zajęcia</span></button>
+  </a>
+</div>
 {% endif %}
 
 {% endblock %}

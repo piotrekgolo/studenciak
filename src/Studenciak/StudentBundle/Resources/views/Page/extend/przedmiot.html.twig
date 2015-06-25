@@ -12,87 +12,83 @@
 {% endblock %}
 
 {% block view %}
-    <div class="db-breadcrumbs">
-        <a class="db-brdcmb-item" href="#">
-            <i class="icon-home"></i>
-        </a>
-        <a class="db-brdcmb-item" href="#">
-            Ogólne
-        </a>
-        <a class="db-brdcmb-item" href="#">
-            Zajęcia
+  <div class="db-breadcrumbs">
+    <a class="db-brdcmb-item" href="{{ path('index') }}">
+      <i class="icon-home"></i>
+  </a>
+  <a class="db-brdcmb-item" href="{{ path('przedmiot') }}">
+      Przedmioty
+  </a>
+</div>
+
+{% if app.session.get('admin') == 1 %} 
+
+    <div class="db-logged" >
+        <a href="{{path('przedmiotDodaj')}}">
+            <button><i class="icon-plus"></i><span>Dodaj przedmiot</span></button>
         </a>
     </div>
 
-
-    {% if app.session.get('admin') == 1 %} 
-
-        <div class="db-logged" >
-            <a href="{{path('przedmiotDodaj')}}">
-                <button><i class="icon-plus"></i><span>Dodaj przedmiot</span></button>
-            </a>
-        </div>
-
-    {% endif %}
+{% endif %}
 
 
 
 
+{% if moje_przedmioty %} 
+    <h2>Moje przedmioty</h2>
+    <table>
+        <tr>
+            <th width="50%">Nazwa</th>
+            <th width="40%">Prowadzący</th>
+            <th width="5%">Semestr</th>
+            <th width="5%"></th>
+        </tr>
+
+
+        {% for przedmiot in moje_przedmioty %}
+
+            <tr>
+                <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
+                <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
+                <td>{{ przedmiot.getSemestr }}</td>
+                <td><i class="icon-settings"></i></td>
+            </tr>
+
+
+
+        {% endfor %}
+    </table>
+    <br />
+{% endif %}
+{% if przedmioty %} 
     {% if moje_przedmioty %} 
-        <h2>Moje przedmioty</h2>
-        <table>
+        <h2>Pozostałe przedmioty</h2>
+        {% else %}
+        <h2>Przedmioty</h2>
+    {% endif %}
+
+    <table>
+        <tr>
+            <th width="50%">Nazwa</th>
+            <th width="40%">Prowadzący</th>
+            <th width="5%">Semestr</th>
+            <th width="5%"></th>
+        </tr>
+
+
+        {% for przedmiot in przedmioty %}
+
             <tr>
-                <th width="50%">Nazwa</th>
-                <th width="40%">Prowadzący</th>
-                <th width="5%">Semestr</th>
-                <th width="5%"></th>
+                <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
+                <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
+                <td>{{ przedmiot.getSemestr }}</td>
+                <td><i class="icon-settings"></i></td>
             </tr>
 
 
-            {% for przedmiot in moje_przedmioty %}
 
-                <tr>
-                    <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
-                    <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
-                    <td>{{ przedmiot.getSemestr }}</td>
-                    <td><i class="icon-settings"></i></td>
-                </tr>
-
-
-
-            {% endfor %}
-        </table>
-        <br />
-    {% endif %}
-    {% if przedmioty %} 
-        {% if moje_przedmioty %} 
-            <h2>Pozostałe przedmioty</h2>
-            {% else %}
-            <h2>Przedmioty</h2>
-        {% endif %}
-        
-        <table>
-            <tr>
-                <th width="50%">Nazwa</th>
-                <th width="40%">Prowadzący</th>
-                <th width="5%">Semestr</th>
-                <th width="5%"></th>
-            </tr>
-
-
-            {% for przedmiot in przedmioty %}
-
-                <tr>
-                    <td><a href="{{path('przedmiotPokaz', {'id': przedmiot.getIdPrzedmiotu})}}">{{ przedmiot.getNazwa }}</a></td>
-                    <td>{{ przedmiot.getIdOsoby.getNazwisko }}</td>
-                    <td>{{ przedmiot.getSemestr }}</td>
-                    <td><i class="icon-settings"></i></td>
-                </tr>
-
-
-
-            {% endfor %}
-        </table>
-    {% endif %}
+        {% endfor %}
+    </table>
+{% endif %}
 {% endblock %}
 

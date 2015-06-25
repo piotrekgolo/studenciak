@@ -12,12 +12,23 @@
 {% endblock %}
 
 {% block view %}
+    <div class="db-breadcrumbs">
+        <a class="db-brdcmb-item" href="{{ path('index') }}">
+            <i class="icon-home"></i>
+        </a>
+        <a class="db-brdcmb-item" href="{{ path('osoby') }}">
+           Osoby
+        </a>
+    </div>
+
+<h2>Osoby</h2>
+
   <table>
     <tr>
       <th style="width: 10%">Avatar</th>
       <th style="width: 30%">Imię i nazwisko</th>
       <th style="width: 40%">E-mail</th>
-      <th style="width: 10%; padding-right: 0px;">Akt/Usuń</th>
+      <th style="width: 10%; padding-right: 0px;">Aktywny</th>
       <th style="width: 10%">Admin</th>
     </tr>
     {% for osoba in osoby %}
@@ -35,17 +46,25 @@
         <td>{{ osoba.getEmail }}</td>
         <td class="buttony">
           {% if osoba.getAktywny == 0 %}
-            <a href="{{ path('aktywuj', {'id' : osoba.getIdOsoby})}}"><button title="Aktywuj" style="font-size: 40px"><i class="icon-user-following"></i></button></a>
+            <a href="{{ path('aktywuj', {'id' : osoba.getIdOsoby})}}">
+              <button title="Aktywuj" style="font-size: 40px"><i class="icon-user-following" style="color: #F20404"></i></button>
+            </a>
             {% else %}
-            <a href="{{ path('osobaUsun', {'id' : osoba.getIdOsoby})}}"><button title="Usuń"><i class="icon-user-unfollow"></i></button></a>
+            <a href="{{ path('osobaZablokuj', {'id' : osoba.getIdOsoby})}}">
+              <button title="Zablokuj"><i class="icon-user-unfollow" ></i></button>
+            </a>
           {% endif %}
         </td>
         <td class="buttony">
           {% if (osoba.getEmail != app.session.get('email')) %}   {# nie można odebrać sobie uprawnień #}
             {% if (osoba.getAdmin == 0) %}
-              <a href="{{ path('osobaAdmin', {'tryb': 1, 'id' : osoba.getIdOsoby})}}"><button title="Mianuj administratorem"><i class="icon-check"></i></button></a>
+              <a href="{{ path('osobaAdmin', {'tryb': 1, 'id' : osoba.getIdOsoby})}}">
+                <button title="Mianuj administratorem"><i class="icon-check" ></i></button>
+              </a>
               {% else %}
-              <a href="{{ path('osobaAdmin', {'tryb': 0, 'id' : osoba.getIdOsoby})}}"><button title="Odbierz uprawnienia administratora"><i class="icon-close"></i></button></a>
+              <a href="{{ path('osobaAdmin', {'tryb': 0, 'id' : osoba.getIdOsoby})}}">
+                <button title="Odbierz uprawnienia administratora"><i class="icon-close" style="color: #F20404"></i></button>
+              </a>
             {% endif %}
           {% endif %}
         </td>

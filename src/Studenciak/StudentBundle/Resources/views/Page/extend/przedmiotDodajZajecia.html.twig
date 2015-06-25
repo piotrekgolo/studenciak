@@ -13,14 +13,17 @@
 
 {% block view %}
 	<div class="db-breadcrumbs">
-		<a class="db-brdcmb-item" href="#">
+		<a class="db-brdcmb-item" href="{{ path('index') }}">
 			<i class="icon-home"></i>
 		</a>
-		<a class="db-brdcmb-item" href="#">
-			Ogólne
+		<a class="db-brdcmb-item" href="{{ path('przedmiot') }}">
+			Przedmioty
 		</a>
-		<a class="db-brdcmb-item" href="#">
-			Zajęcia
+		<a class="db-brdcmb-item" href="{{ path('przedmiotPokaz', {'id': id}) }}">
+			Pokaż przedmiot
+		</a>
+		<a class="db-brdcmb-item" href="{{ path('przedmiotDodajZajecia', {'id_przedmiotu': id }) }}">
+			Dodaj zajęcia
 		</a>
 	</div>
 

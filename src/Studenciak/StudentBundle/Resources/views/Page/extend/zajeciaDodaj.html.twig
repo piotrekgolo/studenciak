@@ -13,14 +13,20 @@
 
 {% block view %}
 	<div class="db-breadcrumbs">
-		<a class="db-brdcmb-item" href="#">
+		<a class="db-brdcmb-item" href="{{ path('index') }}">
 			<i class="icon-home"></i>
 		</a>
-		<a class="db-brdcmb-item" href="#">
-			Ogólne
+		<a class="db-brdcmb-item" href="{{ path('przedmiot') }}">
+			Przedmioty
 		</a>
-		<a class="db-brdcmb-item" href="#">
-			Zajęcia
+		<a class="db-brdcmb-item" href="{{ path('przedmiotPokaz', {'id': zajecia.getIdPrzedmiotu.getIdPrzedmiotu}) }}">
+			Pokaż przedmiot
+		</a>
+		<a class="db-brdcmb-item" href="{{ path('zajeciaPokaz', {'id': zajecia.getIdZajec }) }}">
+			Pokaż zajęcia
+		</a>
+		<a class="db-brdcmb-item" href="{{ path('zajeciaDodaj', {'id': zajecia.getIdZajec }) }}">
+			Dodaj termin
 		</a>
 	</div>
 
@@ -49,7 +55,7 @@
 					<td>{{ form_widget(form.kolejne) }}{{ form_errors(form.kolejne) }}</td>
 				</tr>
 				<tr>
-					<td colspan="2"><input type="submit" value="Dodaj zajecia" /></td>
+					<td colspan="2"><input type="submit" value="Dodaj zajęcia" /></td>
 				</tr>
 			</table>
 

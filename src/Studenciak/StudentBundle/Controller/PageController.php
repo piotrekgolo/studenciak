@@ -43,11 +43,15 @@ class PageController extends Controller
 		if (!$session->get('email'))
 			return $this->redirect($this->generateUrl('login'));
 
-		$em = $this->getDoctrine()->getRepository('StudenciakBundle:Przedmiot');
-		$wszystkie_przedmioty = $em->findBy(array(), array('semestr'=>'ASC', 'nazwa'=>'ASC'));
+		$przemdiotRepo = $this->getDoctrine()->getRepository('StudenciakBundle:Przedmiot');
+		$wszystkie_przedmioty = $przemdiotRepo->findBy(array(), array('nazwa'=>'ASC'));//, 'nazwa'=>'ASC'));
 
-		$em = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaPrzedmiot');
-		$moje_przedmioty = $em->findBy(array('id_osoby'=>$session->get('id')));
+$osobaprzedmiotRepo = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaPrzedmiot');
+
+$sortowanie_moich = $osobaprzedmiotRepo->createQueryBuilder('op')->select('op')->join('op.id_przedmiotu', 'p')->
+		where('op.id_osoby = ?1')->setParameter(1, $session->get('id'))->orderBy('p.nazwa', 'ASC');		// sortowanie po nazwie przedmiotu
+
+		$moje_przedmioty = $sortowanie_moich->getQuery()->getResult();
 
 		$moje_przedmioty_ob = array();
 		foreach ($moje_przedmioty as $przed) {					//wyciągamy przedmioty z tablicy obiektow OsobaPrzedmiot
@@ -199,23 +203,25 @@ class PageController extends Controller
 			$session->remove('email');
 			$session->remove('admin');
 		}
-		return $this->redirect($this->generateUrl('przedmiot'));
+		return $this->redirect($this->generateUrl('index'));
 	}
 
-	public function osobaUsunAction($id)
+	public function osobaZablokujAction($id)
 	{
 		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
 		$osoba = $repo->find($id);
 
-		return $this->render('StudenciakBundle:Page:extend/usun.html.twig', array('osoba' => $osoba));
+		return $this->render('StudenciakBundle:Page:extend/osobaZablokuj.html.twig', array('osoba' => $osoba));
 	}
 
-	public function osobaUsuwanieAction($id)
+	public function osobaZablokowanieAction($id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$repo = $this->getDoctrine()->getRepository('StudenciakBundle:Osoba');
 		$osoba = $repo->find($id);
-		$em->remove($osoba);
+		$osoba->SetAktywny(0);
+
+		$em->persist($osoba);
 		$em->flush();
 
 		return $this->redirect($this->generateUrl('osoby'));
@@ -289,7 +295,7 @@ class PageController extends Controller
 		}
 
 		else
-			return $this->redirect($this->generateUrl('przedmiot'));
+			return $this->redirect($this->generateUrl('index'));
 	}
 
 	public function przedmiotPokazAction($id)
@@ -392,11 +398,12 @@ class PageController extends Controller
 				return $this->redirect($this->generateUrl('przedmiotPokaz', array('id' => $id_przedmiotu)));
 			}
 
-			return $this->render('StudenciakBundle:Page:extend/przedmiotDodajZajecia.html.twig', array('form' => $form->createView()));
+			return $this->render('StudenciakBundle:Page:extend/przedmiotDodajZajecia.html.twig', 
+				array('form' => $form->createView(), 'id'=> $id_przedmiotu));
 		}
 
 		else
-			return $this->redirect($this->generateUrl('przedmiot'));
+			return $this->redirect($this->generateUrl('index'));
 	}
 
 	public function zajeciaPokazAction($id)
@@ -410,8 +417,31 @@ class PageController extends Controller
 		$czy_zapisany = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaZajecia')
 		->findBy(array('id_osoby'=>$session->get('id'), 'id_zajec'=>$id));
 
+		//sprawdzamy ile osob jest zapisanych a ile jest obecnych na lekcji
+		$zapisani_zajecia = $em->getRepository('StudenciakBundle:OsobaZajecia')->findBy(array('id_zajec'=>$id));
+		$zapisane_osoby = count($zapisani_zajecia);
+
+		$obecni_na_lekcji = $em->getRepository('StudenciakBundle:Obecnosci');//->findBy(array('id_lekcji'=>$lekcje->getIdLekcji()));
+
+		$id_lekcji_z_zajec = array();
+		foreach ($lekcje as $l)
+		{
+			$id_lekcji_z_zajec[] = $l->getIdLekcji();
+		}
+
+		$query = $obecni_na_lekcji->createQueryBuilder('ob')->select('l.id_lekcji, count(ob.id_osoby) as licznik')->join('ob.id_osoby', 'os')->join('ob.id_lekcji', 'l')->
+		where('l.id_lekcji IN (:tab)')->setParameter('tab', $id_lekcji_z_zajec, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)->groupBy('l.id_lekcji');
+
+		$obecni = $query->getQuery()->getResult();
+		$obecni_indeksy = array();
+		foreach ($obecni as $o) {
+			$obecni_indeksy[$o['id_lekcji']] = $o['licznik'];
+		}
+		///$this->zobacz($obecni);
+		//$this->zobacz($lekcje);
+
 		return $this->render('StudenciakBundle:Page:extend/zajeciaPokaz.html.twig', 
-			array('zajecia' => $zajecia, 'lekcje' => $lekcje, 'zapisany' => $czy_zapisany));
+			array('zajecia' => $zajecia, 'lekcje' => $lekcje, 'zapisany' => $czy_zapisany, 'wszystkich'=>$zapisane_osoby, 'obecni' => $obecni_indeksy));
 	}
 
 	public function zajeciaDodajAction(Request $request, $id)
@@ -465,11 +495,11 @@ class PageController extends Controller
 				return $this->redirect($this->generateUrl('zajeciaPokaz', array('id' => $id)));
 			}
 
-			return $this->render('StudenciakBundle:Page:extend/zajeciaDodaj.html.twig', array('form' => $form->createView()));
+			return $this->render('StudenciakBundle:Page:extend/zajeciaDodaj.html.twig', array('form' => $form->createView(), 'zajecia'=>$zajecia));
 		}
 
 		else
-			return $this->redirect($this->generateUrl('przedmiot'));
+			return $this->redirect($this->generateUrl('index'));
 	}
 
 
@@ -562,4 +592,46 @@ class PageController extends Controller
 
 		return $this->redirect($this->generateUrl('zajeciaPokazLekcjeSprawdzObecnosc', array('id' => $id, 'sprawdz' => 1)));
 	}
+
+	public function zajeciaLekcjaZmienTematAction(Request $request, $id, $tryb=0)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$session = $this->getRequest()->getSession();
+		if ($session->get('admin'))
+		{
+			$lekcja = $em->getRepository('StudenciakBundle:Lekcje')->find($id);
+
+			//$data_zajec = new \DateTime($lekcja->getTermin()->format('Y-m-d H:i:s'));
+
+			$form = $this->createFormBuilder($lekcja)
+			->add('temat', 'text', array('label'  => 'Temat zajęć', 'max_length' => 255))
+			->add('data_lekcji', 'date', array('label'  => 'Data zajęć'))//,  'data' => $data_zajec))
+->getForm();
+
+$form->handleRequest($request);
+if ($form->isValid()) 
+{
+	$task = $form->getData();
+	$em->persist($task);
+	$em->flush();
+
+	if ($tryb == 1) {
+		return $this->redirect($this->generateUrl('zajeciaPokaz', array('id' => $lekcja->getIdZajec()->getIdZajec())));
+	}
+	else
+	{
+		return $this->redirect($this->generateUrl('zajeciaPokazLekcje', array('id' => $id)));
+	}
+
+}
+
+return $this->render('StudenciakBundle:Page:extend/zajeciaLekcjaZmienTemat.html.twig', 
+	array('form' => $form->createView(), 'lekcja'=>$lekcja));
+}
+
+else
+	return $this->redirect($this->generateUrl('index'));
+}
+
 }

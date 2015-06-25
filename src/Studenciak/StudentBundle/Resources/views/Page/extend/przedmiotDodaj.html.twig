@@ -12,17 +12,17 @@
 {% endblock %}
 
 {% block view %}
-	<div class="db-breadcrumbs">
-		<a class="db-brdcmb-item" href="#">
-			<i class="icon-home"></i>
-		</a>
-		<a class="db-brdcmb-item" href="#">
-			Ogólne
-		</a>
-		<a class="db-brdcmb-item" href="#">
-			Zajęcia
-		</a>
-	</div>
+  <div class="db-breadcrumbs">
+    <a class="db-brdcmb-item" href="{{ path('index') }}">
+      <i class="icon-home"></i>
+  </a>
+  <a class="db-brdcmb-item" href="{{ path('przedmiot') }}">
+      Przedmioty
+  </a>
+  <a class="db-brdcmb-item" href="{{ path('przedmiotDodaj') }}">
+      Dodaj przedmiot
+  </a>
+</div>
 
 	{% if app.session.get('admin') == 1 %} 
 
