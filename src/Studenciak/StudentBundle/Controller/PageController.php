@@ -46,9 +46,9 @@ class PageController extends Controller
 		$przemdiotRepo = $this->getDoctrine()->getRepository('StudenciakBundle:Przedmiot');
 		$wszystkie_przedmioty = $przemdiotRepo->findBy(array(), array('nazwa'=>'ASC'));//, 'nazwa'=>'ASC'));
 
-$osobaprzedmiotRepo = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaPrzedmiot');
+		$osobaprzedmiotRepo = $this->getDoctrine()->getRepository('StudenciakBundle:OsobaPrzedmiot');
 
-$sortowanie_moich = $osobaprzedmiotRepo->createQueryBuilder('op')->select('op')->join('op.id_przedmiotu', 'p')->
+		$sortowanie_moich = $osobaprzedmiotRepo->createQueryBuilder('op')->select('op')->join('op.id_przedmiotu', 'p')->
 		where('op.id_osoby = ?1')->setParameter(1, $session->get('id'))->orderBy('p.nazwa', 'ASC');		// sortowanie po nazwie przedmiotu
 
 		$moje_przedmioty = $sortowanie_moich->getQuery()->getResult();
@@ -575,22 +575,40 @@ $sortowanie_moich = $osobaprzedmiotRepo->createQueryBuilder('op')->select('op')-
 		return $this->redirect($this->generateUrl('zajeciaPokazLekcje', array('id' => $id)));
 	}
 
-	public function zajeciaLekcjaObecnySprawdzAction($id, $uczen)
+	public function zajeciaLekcjaObecnySprawdzAction()
 	{
 		$em = $this->getDoctrine()->getManager();
 		$session = $this->getRequest()->getSession();
 		
-		$lekcja = $em->getRepository('StudenciakBundle:Lekcje')->find($id);		
-		$osoba = $em->getRepository('StudenciakBundle:Osoba')->find($uczen);	
+		if ($session->get('admin'))
+		{
+			$request = $this->container->get('request');
+			$lekcja = $request->request->get('lekcja');
+			$osoba = $request->request->get('osoba');
+			$lekcja = intval($lekcja);
+			$osoba = intval($osoba);
 
-		$obecnosc = new Obecnosci();
-		$obecnosc->setIdOsoby($osoba);
-		$obecnosc->setIdLekcji($lekcja);
+			$osoba = $em->getRepository('StudenciakBundle:Osoba')->find($osoba);	
+			$lekcja = $em->getRepository('StudenciakBundle:Lekcje')->find($lekcja);
 
-		$em->persist($obecnosc);
-		$em->flush();
+			$obecnosc = new Obecnosci();
+			$obecnosc->setIdOsoby($osoba);
+			$obecnosc->setIdLekcji($lekcja);
 
-		return $this->redirect($this->generateUrl('zajeciaPokazLekcjeSprawdzObecnosc', array('id' => $id, 'sprawdz' => 1)));
+			$em->persist($obecnosc);
+			$em->flush();
+
+
+			$response = 1;
+		}
+
+		else
+		{
+			$response = 0;
+		}
+		return new Response(json_encode($response));
+
+		//return $this->redirect($this->generateUrl('zajeciaPokazLekcjeSprawdzObecnosc', array('id' => $id, 'sprawdz' => 1)));
 	}
 
 	public function zajeciaLekcjaZmienTematAction(Request $request, $id, $tryb=0)

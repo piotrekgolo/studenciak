@@ -99,7 +99,7 @@ zajeciaLekcjaObecny:
     defaults: { _controller: StudenciakBundle:Page:zajeciaLekcjaObecny }
 
 zajeciaLekcjaObecnySprawdz:
-    path: /zajecia/obecny/{id}/{uczen}
+    path: /zajecia/jestobecny/
     defaults: { _controller: StudenciakBundle:Page:zajeciaLekcjaObecnySprawdz }
 
 zajeciaLekcjaZmienTemat:
