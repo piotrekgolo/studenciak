@@ -1,0 +1,25 @@
+composer update
+pobiera to czego nie ma na githubie
+
+
+php app/console assets:install --symlink web
+kopiuje obrazki z src do web
+
+
+php app/console assetic:dump --env=prod --no-debug
+php app/console assetic:dump
+
+
+
+
+php app/console doctrine:generate:entities Studenciak
+generuje encje
+
+
+php app/console doctrine:schema:update --force
+uaktualnia baze danych
+
+realpath_cache_size = 2M
+[XDebug]
+xdebug.profiler_enable = 0
+xdebug.remote_enable = 0

@@ -11,19 +11,124 @@
 	active
 {% endblock %}
 
-
 {% block view %}
     <div class="db-breadcrumbs">
-        <a class="db-brdcmb-item" href="{{ path('index') }}">
+        <a class="db-brdcmb-item" href="#">
             <i class="icon-home"></i>
         </a>
-        <a class="db-brdcmb-item" href="{{ path('repo') }}">
+        <a class="db-brdcmb-item" href="#">
+            Ogólne
+        </a>
+        <a class="db-brdcmb-item" href="#">
             Repozytoria
         </a>
     </div>
 
-<h2>Repozytoria</h2>
-   
+
+    {% if app.session.get('admin') == 1 %} 
+
+        <div class="db-logged" >
+            <a href="{{path('repoDodaj')}}">
+                <button><i class="icon-plus"></i><span>Dodaj plik</span></button>
+            </a>
+        </div>
+
+    
+
+
+        {% if moje_repozytoria %} 
+            <h2>Moje Repozytoria</h2>
+            <table>
+                <tr>
+                    <th width="30%">Nazwa</th>
+                    <th width="20%">Prowadzący</th>
+                    <th width="30%">Przedmiot</th>
+                    <th width="10%">Pobierz</th>
+                    <th width="10%">Usun</th>
+                </tr>
+
+
+                {% for repozytorium in moje_repozytoria %}
+
+                    <tr>
+                        <td>{{ repozytorium.getNazwa }} </td>
+                        <td>{{ repozytorium.getIdOsoby.getNazwisko }}</td>
+                        <td>{{ repozytorium.getIdPrzedmiotu.getNazwa }}</td>
+                        <td><a href="../Repozytoria/{{ repozytorium.getPath }}" target="_blank"><button title="Pobierz"><i class="icon-check" ></i></button></a></td>
+                        <td><a href="{{ path('repoUsun', {'id' : repozytorium.getIdRepozytorium})}}"><button title="Usun"><i class="icon-close" style="color: #F20404"></i></button></a></td>
+                    </tr>
+
+
+
+                {% endfor %}
+            </table>
+            <br />
+        {% endif %}
+        {% if repozytoria %} 
+            {% if moje_repozytoria %} 
+                <h2>Pozostałe Repozytoria</h2>
+                {% else %}
+                <h2>Repozytoria</h2>
+            {% endif %}
+            
+            <table>
+                <tr>
+                    <th width="40%">Nazwa</th>
+                    <th width="20%">Prowadzący</th>
+                    <th width="30%">Przedmiot</th>
+                    <th width="5%">Pobierz</th>
+                    <th width="5%">Usun</th>
+                </tr>
+
+
+                {% for repozytorium in moje_repozytoria %}
+
+                    <tr>
+                        <td>{{ repozytorium.getNazwa }} </td>
+                        <td>{{ repozytorium.getIdOsoby.getNazwisko }}</td>
+                        <td>{{ repozytorium.getIdPrzedmiotu.getNazwa }}</td>
+                        <td><a href="../Repozytoria/{{ repozytorium.getPath }}" target="_blank"><button title="Pobierz"><i class="icon-check" ></i></button></a></td>
+                        <td><a href="{{ path('repoUsun', {'id' : repozytorium.getIdRepozytorium})}}"><button title="Usun"><i class="icon-close" style="color: #F20404"></i></button></a></td>
+                    </tr>
+
+
+
+                {% endfor %}
+            </table>
+        {% endif %}
+    {% else %}
+       
+        {% if uczen_repozytoria %}
+            <h2>Repozytoria</h2>
+           <table>
+                <tr>
+                    <th width="40%">Nazwa</th>
+                    <th width="20%">Prowadzący</th>
+                    <th width="30%">Przedmiot</th>
+                    <th width="5%">Pobierz</th>
+                    
+                </tr>
+
+
+                {% for repozytorium in uczen_repozytoria %}
+
+                    <tr>
+                        <td>{{ repozytorium.getNazwa }} </td>
+                        <td>{{ repozytorium.getIdOsoby.getNazwisko }}</td>
+                        <td>{{ repozytorium.getIdPrzedmiotu.getNazwa }}</td>
+                        <td><a href="../Repozytoria/{{ repozytorium.getPath }}" target="_blank"><button title="Pobierz"><i class="icon-check" ></i></button></a></td>
+                        
+                    </tr>
+
+
+
+                {% endfor %}
+            </table>
+                
+        {% endif %}
+    {% endif %}
 
 {% endblock %}
+
+
 

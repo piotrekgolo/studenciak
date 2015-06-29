@@ -105,3 +105,16 @@ zajeciaLekcjaObecnySprawdz:
 zajeciaLekcjaZmienTemat:
     path: /zajecia/lekcjaa/zmien/{id}/{tryb}
     defaults: { _controller: StudenciakBundle:Page:zajeciaLekcjaZmienTemat }
+
+
+repoDodaj:
+    path: /repo/dodaj
+    defaults: { _controller: StudenciakBundle:Page:repoDodaj }
+
+repoUsun:
+    path: /repo/usun/{id}
+    defaults: { _controller: StudenciakBundle:Page:repoUsun }
+
+repoUsuwanie:
+    path: /repo/usuwanie/{id}
+    defaults: { _controller: StudenciakBundle:Page:repoUsuwanie }
